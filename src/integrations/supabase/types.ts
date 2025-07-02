@@ -9,7 +9,245 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      clients: {
+        Row: {
+          activated_tax_module: boolean | null
+          contact_number_1: string
+          contact_number_2: string | null
+          contact_person_name: string
+          country: string
+          created_at: string
+          currency: string
+          discontinue_reason: string | null
+          email_id: string | null
+          gst_number: string | null
+          id: string
+          name: string
+          no_of_branches: number | null
+          onboard_date: string
+          place: string | null
+          reference: string | null
+          state: string | null
+          status: Database["public"]["Enums"]["client_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_tax_module?: boolean | null
+          contact_number_1: string
+          contact_number_2?: string | null
+          contact_person_name: string
+          country: string
+          created_at?: string
+          currency?: string
+          discontinue_reason?: string | null
+          email_id?: string | null
+          gst_number?: string | null
+          id?: string
+          name: string
+          no_of_branches?: number | null
+          onboard_date?: string
+          place?: string | null
+          reference?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["client_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_tax_module?: boolean | null
+          contact_number_1?: string
+          contact_number_2?: string | null
+          contact_person_name?: string
+          country?: string
+          created_at?: string
+          currency?: string
+          discontinue_reason?: string | null
+          email_id?: string | null
+          gst_number?: string | null
+          id?: string
+          name?: string
+          no_of_branches?: number | null
+          onboard_date?: string
+          place?: string | null
+          reference?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["client_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          contact_number: string
+          contact_person: string
+          country: string
+          created_at: string
+          customer_name: string
+          id: string
+          next_followup_date: string | null
+          place: string | null
+          reference: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          status_remarks: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contact_number: string
+          contact_person: string
+          country: string
+          created_at?: string
+          customer_name: string
+          id?: string
+          next_followup_date?: string | null
+          place?: string | null
+          reference?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          status_remarks?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contact_number?: string
+          contact_person?: string
+          country?: string
+          created_at?: string
+          customer_name?: string
+          id?: string
+          next_followup_date?: string | null
+          place?: string | null
+          reference?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          status_remarks?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payment_followups: {
+        Row: {
+          client_id: string
+          created_at: string
+          followup_mode: Database["public"]["Enums"]["followup_mode"]
+          followup_remarks: string | null
+          followup_status: Database["public"]["Enums"]["followup_status"]
+          id: string
+          next_followup_date: string | null
+          payment_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          followup_mode: Database["public"]["Enums"]["followup_mode"]
+          followup_remarks?: string | null
+          followup_status?: Database["public"]["Enums"]["followup_status"]
+          id?: string
+          next_followup_date?: string | null
+          payment_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          followup_mode?: Database["public"]["Enums"]["followup_mode"]
+          followup_remarks?: string | null
+          followup_status?: Database["public"]["Enums"]["followup_status"]
+          id?: string
+          next_followup_date?: string | null
+          payment_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_followups_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_followups_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          client_id: string
+          commission: number | null
+          created_at: string
+          currency: string
+          gst_amount: number | null
+          id: string
+          last_paid_amount: number | null
+          last_paid_date: string | null
+          need_gst_bill: boolean | null
+          next_renewal_date: string | null
+          payment_remarks: string | null
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          subscription_plan: Database["public"]["Enums"]["subscription_plan"]
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          client_id: string
+          commission?: number | null
+          created_at?: string
+          currency?: string
+          gst_amount?: number | null
+          id?: string
+          last_paid_amount?: number | null
+          last_paid_date?: string | null
+          need_gst_bill?: boolean | null
+          next_renewal_date?: string | null
+          payment_remarks?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          subscription_plan: Database["public"]["Enums"]["subscription_plan"]
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          client_id?: string
+          commission?: number | null
+          created_at?: string
+          currency?: string
+          gst_amount?: number | null
+          id?: string
+          last_paid_amount?: number | null
+          last_paid_date?: string | null
+          need_gst_bill?: boolean | null
+          next_renewal_date?: string | null
+          payment_remarks?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +256,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      client_status: "active" | "discontinued" | "hold"
+      followup_mode: "phone" | "whatsapp" | "email"
+      followup_status: "pending" | "completed" | "scheduled"
+      lead_status: "very_hot" | "hot" | "warm" | "remove_close"
+      payment_status: "paid" | "unpaid" | "invoiced"
+      subscription_plan: "monthly" | "3_month" | "6_month" | "yearly"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +376,13 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      client_status: ["active", "discontinued", "hold"],
+      followup_mode: ["phone", "whatsapp", "email"],
+      followup_status: ["pending", "completed", "scheduled"],
+      lead_status: ["very_hot", "hot", "warm", "remove_close"],
+      payment_status: ["paid", "unpaid", "invoiced"],
+      subscription_plan: ["monthly", "3_month", "6_month", "yearly"],
+    },
   },
 } as const
