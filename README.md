@@ -1,73 +1,45 @@
-# Welcome to your Lovable project
+# 🚀 Growth Hub Manager
 
-## Project info
+**Growth Hub Manager** is a responsive and modern web application built to streamline and centralize growth operations. Designed with usability and scalability in mind, it offers a smooth, intuitive interface for managing your business processes effectively.
 
-**URL**: https://lovable.dev/projects/a6ce879f-f302-4198-96ce-d05d138df0bd
+🔗 **Live URL**: [https://growth-hub-manager.lovable.app](https://growth-hub-manager.lovable.app)
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/a6ce879f-f302-4198-96ce-d05d138df0bd) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## 📦 Built With
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- ⚡ **Vite** – Lightning-fast frontend tooling
+- 💻 **React** – Component-based UI library
+- 🟦 **TypeScript** – Strongly-typed JavaScript for safer development
+- 💅 **Tailwind CSS** – Utility-first CSS framework for rapid UI development
+- 🧩 **shadcn/ui** – Accessible and customizable UI components
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/a6ce879f-f302-4198-96ce-d05d138df0bd) and click on Share -> Publish.
+## ✨ Features
 
-## Can I connect a custom domain to my Lovable project?
+- Fully responsive and mobile-friendly layout
+- Clean, modern design system using Tailwind CSS and shadcn/ui
+- Component-based architecture for maintainability and reuse
+- Optimized for performance and fast load times
+- Easily extendable for new features or integrations
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🚀 Getting Started (Development)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+> _If you or your developer needs to run the project locally:_
+
+### Prerequisites
+
+- Node.js (v18 or newer)
+- npm or pnpm
+
+### Installation
+
+```bash
+git clone https://github.com/your-repo-name/growth-hub-manager.git
+cd growth-hub-manager
+pnpm install
