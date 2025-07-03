@@ -148,6 +148,7 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+SET search_path = public;
 
 -- Create triggers for automatic timestamp updates
 CREATE TRIGGER update_clients_updated_at
@@ -184,6 +185,7 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+SET search_path = public;
 
 -- Create trigger for GST calculation
 CREATE TRIGGER calculate_gst_on_payment
@@ -210,9 +212,16 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+SET search_path = public;
 
 -- Create trigger for renewal date calculation
 CREATE TRIGGER calculate_renewal_date_on_payment
     BEFORE INSERT OR UPDATE ON public.payments
     FOR EACH ROW
     EXECUTE FUNCTION public.calculate_next_renewal_date();
+    -- Create extensions schema if it doesn't exist and move pg_net there
+CREATE SCHEMA IF NOT EXISTS extensions;
+
+-- Move pg_net extension to extensions schema
+DROP EXTENSION IF EXISTS pg_net;
+CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
