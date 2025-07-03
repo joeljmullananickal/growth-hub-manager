@@ -95,8 +95,7 @@ export default function Dashboard() {
           .select('followup_status, next_followup_date');
 
         const needFollowup = followups?.filter(f => 
-          f.followup_status === 'pending' && 
-          (!f.next_followup_date || new Date(f.next_followup_date) <= new Date())
+          f.followup_status === 'pending'
         ).length || 0;
 
         // Fetch leads stats
@@ -195,16 +194,15 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-inter animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
-      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {dashboardCards.map((card) => (
-          <Card 
-            key={card.key} 
-            className="cursor-pointer hover:shadow-md transition-shadow"
+          <Card
+            key={card.key}
+            className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:scale-105 hover:shadow-lg"
             onClick={() => handleCardClick(card.key)}
           >
             <CardHeader className="pb-2">

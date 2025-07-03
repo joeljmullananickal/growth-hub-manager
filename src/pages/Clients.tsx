@@ -44,6 +44,7 @@ export default function Clients() {
     discontinue_reason: '',
   });
   const [deletingClientId, setDeletingClientId] = useState<string | null>(null);
+  const [countryFilter, setCountryFilter] = useState<string>('all');
 
   useEffect(() => {
     // Handle URL parameters for filtering
@@ -55,36 +56,27 @@ export default function Clients() {
     }
   }, [searchParams]);
 
+  // Enhanced filtering logic
   useEffect(() => {
     let filtered = clients;
 
-    // Filter by status
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(client => client.status === statusFilter);
+      filtered = filtered.filter((c) => c.status === statusFilter);
     }
-
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(client =>
-        client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.contact_person_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.country.toLowerCase().includes(searchTerm.toLowerCase())
+    if (countryFilter !== 'all') {
+      filtered = filtered.filter((c) => c.country === countryFilter);
+    }
+    if (searchTerm.trim()) {
+      const term = searchTerm.trim().toLowerCase();
+      filtered = filtered.filter(
+        (c) =>
+          c.name.toLowerCase().includes(term) ||
+          (c.gst_number && c.gst_number.toLowerCase().includes(term))
       );
     }
 
-    // Handle period filtering from URL
-    const period = searchParams.get('period');
-    if (period === 'thisMonth') {
-      const currentMonth = new Date().getMonth();
-      const currentYear = new Date().getFullYear();
-      filtered = filtered.filter(client => {
-        const onboardDate = new Date(client.onboard_date);
-        return onboardDate.getMonth() === currentMonth && onboardDate.getFullYear() === currentYear;
-      });
-    }
-
     setFilteredClients(filtered);
-  }, [clients, statusFilter, searchTerm, searchParams]);
+  }, [clients, statusFilter, countryFilter, searchTerm]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -205,7 +197,7 @@ export default function Clients() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-inter animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Clients</h1>
         <Dialog open={isDialogOpen} onOpenChange={(open) => {
@@ -213,9 +205,14 @@ export default function Clients() {
           if (!open) resetForm();
         }}>
           <DialogTrigger asChild>
-            <Button onClick={resetForm}>Add Client</Button>
+            <Button
+              onClick={resetForm}
+              className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
+            >
+              Add Client
+            </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto rounded-xl shadow-soft animate-fade-in">
             <DialogHeader>
               <DialogTitle>{editingClient ? 'Edit Client' : 'Add New Client'}</DialogTitle>
             </DialogHeader>
@@ -228,6 +225,7 @@ export default function Clients() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div>
@@ -244,22 +242,23 @@ export default function Clients() {
                   </Select>
                 </div>
               </div>
-
               <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="gst_number">GST Number</Label>
+                  <Input
+                    id="gst_number"
+                    value={formData.gst_number}
+                    onChange={(e) => setFormData({ ...formData, gst_number: e.target.value })}
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  />
+                </div>
                 <div>
                   <Label htmlFor="state">State</Label>
                   <Input
                     id="state"
                     value={formData.state}
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="place">Place</Label>
-                  <Input
-                    id="place"
-                    value={formData.place}
-                    onChange={(e) => setFormData({ ...formData, place: e.target.value })}
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -356,18 +355,17 @@ export default function Clients() {
           </DialogContent>
         </Dialog>
       </div>
-
-      <div className="flex space-x-4">
-        <div className="flex-1">
-          <Input
-            placeholder="Search clients..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+      {/* Filters */}
+      <div className="flex flex-wrap gap-4 mb-2">
+        <Input
+          placeholder="Search by name or GST number..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary w-56"
+        />
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-48">
-            <SelectValue />
+          <SelectTrigger className="w-40 rounded-xl transition-all duration-200">
+            <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
@@ -376,11 +374,24 @@ export default function Clients() {
             <SelectItem value="hold">Hold</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={countryFilter} onValueChange={setCountryFilter}>
+          <SelectTrigger className="w-40 rounded-xl transition-all duration-200">
+            <SelectValue placeholder="Country" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Countries</SelectItem>
+            {countries.map((country) => (
+              <SelectItem key={country} value={country}>{country}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-
       <div className="grid gap-4">
         {filteredClients.map((client) => (
-          <Card key={client.id} className="cursor-pointer hover:shadow-md transition-shadow">
+          <Card
+            key={client.id}
+            className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+          >
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">{client.name}</CardTitle>
@@ -392,6 +403,7 @@ export default function Clients() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleEdit(client)}
+                    className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
                   >
                     Edit
                   </Button>
@@ -401,6 +413,7 @@ export default function Clients() {
                     onClick={() => handleDelete(client.id)}
                     disabled={deletingClientId === client.id}
                     title="Delete client"
+                    className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -411,6 +424,9 @@ export default function Clients() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
                   <span className="font-medium">Country:</span> {client.country}
+                </div>
+                <div>
+                  <span className="font-medium">GST:</span> {client.gst_number || '—'}
                 </div>
                 <div>
                   <span className="font-medium">Contact:</span> {client.contact_person_name}
@@ -431,7 +447,6 @@ export default function Clients() {
           </Card>
         ))}
       </div>
-
       {filteredClients.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
           No clients found matching your criteria.

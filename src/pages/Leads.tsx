@@ -117,121 +117,18 @@ export default function Leads() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-inter animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Leads</h1>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={resetForm}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Lead
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Create New Lead</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreate} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="customer_name">Customer Name</Label>
-                  <Input
-                    value={formData.customer_name}
-                    onChange={(e) => setFormData({...formData, customer_name: e.target.value})}
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="contact_person">Contact Person</Label>
-                  <Input
-                    value={formData.contact_person}
-                    onChange={(e) => setFormData({...formData, contact_person: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="contact_number">Contact Number</Label>
-                  <Input
-                    value={formData.contact_number}
-                    onChange={(e) => setFormData({...formData, contact_number: e.target.value})}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="country">Country</Label>
-                  <Input
-                    value={formData.country}
-                    onChange={(e) => setFormData({...formData, country: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="place">Place</Label>
-                  <Input
-                    value={formData.place}
-                    onChange={(e) => setFormData({...formData, place: e.target.value})}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="reference">Reference</Label>
-                  <Input
-                    value={formData.reference}
-                    onChange={(e) => setFormData({...formData, reference: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value: 'very_hot' | 'hot' | 'warm' | 'remove_close') => setFormData({...formData, status: value})}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="very_hot">Very Hot</SelectItem>
-                      <SelectItem value="hot">Hot</SelectItem>
-                      <SelectItem value="warm">Warm</SelectItem>
-                      <SelectItem value="remove_close">Remove/Close</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="next_followup_date">Next Followup Date</Label>
-                  <Input
-                    type="date"
-                    value={formData.next_followup_date}
-                    onChange={(e) => setFormData({...formData, next_followup_date: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="status_remarks">Status Remarks</Label>
-                <Textarea
-                  value={formData.status_remarks}
-                  onChange={(e) => setFormData({...formData, status_remarks: e.target.value})}
-                  placeholder="Add any remarks about the lead status..."
-                />
-              </div>
-
-              <Button type="submit" className="w-full">Create Lead</Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+        <Button
+          onClick={() => setIsCreateOpen(true)}
+          className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add Lead
+        </Button>
       </div>
-
-      <Card>
+      <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
         <CardHeader>
           <CardTitle>All Leads</CardTitle>
         </CardHeader>
@@ -239,33 +136,27 @@ export default function Leads() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Customer</TableHead>
-                <TableHead>Contact Person</TableHead>
+                <TableHead>Name</TableHead>
                 <TableHead>Contact</TableHead>
-                <TableHead>Location</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Next Followup</TableHead>
-                <TableHead>Reference</TableHead>
+                <TableHead>Date</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {leads.map((lead) => (
-                <TableRow key={lead.id}>
+                <TableRow key={lead.id} className="hover:bg-blue-50 transition-colors duration-150">
                   <TableCell className="font-medium">{lead.customer_name}</TableCell>
-                  <TableCell>{lead.contact_person}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Phone className="w-3 h-3" />
                       {lead.contact_number}
                     </div>
                   </TableCell>
-                  <TableCell>{lead.place ? `${lead.place}, ${lead.country}` : lead.country}</TableCell>
                   <TableCell>{getStatusBadge(lead.status)}</TableCell>
                   <TableCell>
                     {lead.next_followup_date ? format(parseISO(lead.next_followup_date), 'MMM dd, yyyy') : 'N/A'}
                   </TableCell>
-                  <TableCell>{lead.reference || 'N/A'}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button variant="outline" size="sm" onClick={() => openEditDialog(lead)}>
@@ -282,6 +173,110 @@ export default function Leads() {
           </Table>
         </CardContent>
       </Card>
+
+      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Create New Lead</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleCreate} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="customer_name">Customer Name</Label>
+                <Input
+                  value={formData.customer_name}
+                  onChange={(e) => setFormData({...formData, customer_name: e.target.value})}
+                  required
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="contact_person">Contact Person</Label>
+                <Input
+                  value={formData.contact_person}
+                  onChange={(e) => setFormData({...formData, contact_person: e.target.value})}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="contact_number">Contact Number</Label>
+                <Input
+                  value={formData.contact_number}
+                  onChange={(e) => setFormData({...formData, contact_number: e.target.value})}
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="country">Country</Label>
+                <Input
+                  value={formData.country}
+                  onChange={(e) => setFormData({...formData, country: e.target.value})}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="place">Place</Label>
+                <Input
+                  value={formData.place}
+                  onChange={(e) => setFormData({...formData, place: e.target.value})}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="reference">Reference</Label>
+                <Input
+                  value={formData.reference}
+                  onChange={(e) => setFormData({...formData, reference: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="status">Status</Label>
+                <Select value={formData.status} onValueChange={(value: 'very_hot' | 'hot' | 'warm' | 'remove_close') => setFormData({...formData, status: value})}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="very_hot">Very Hot</SelectItem>
+                    <SelectItem value="hot">Hot</SelectItem>
+                    <SelectItem value="warm">Warm</SelectItem>
+                    <SelectItem value="remove_close">Remove/Close</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="next_followup_date">Next Followup Date</Label>
+                <Input
+                  type="date"
+                  value={formData.next_followup_date}
+                  onChange={(e) => setFormData({...formData, next_followup_date: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="status_remarks">Status Remarks</Label>
+              <Textarea
+                value={formData.status_remarks}
+                onChange={(e) => setFormData({...formData, status_remarks: e.target.value})}
+                placeholder="Add any remarks about the lead status..."
+              />
+            </div>
+
+            <Button type="submit" className="w-full">Create Lead</Button>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="max-w-2xl">

@@ -110,17 +110,20 @@ export default function Followups() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-inter animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Follow-ups</h1>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button onClick={resetForm}>
+            <Button
+              onClick={resetForm}
+              className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Add Followup
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="rounded-xl shadow-soft animate-fade-in">
             <DialogHeader>
               <DialogTitle>Create New Followup</DialogTitle>
             </DialogHeader>
@@ -161,6 +164,7 @@ export default function Followups() {
                   type="date"
                   value={formData.next_followup_date}
                   onChange={(e) => setFormData({...formData, next_followup_date: e.target.value})}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
                 />
               </div>
 
@@ -170,16 +174,17 @@ export default function Followups() {
                   value={formData.followup_remarks}
                   onChange={(e) => setFormData({...formData, followup_remarks: e.target.value})}
                   placeholder="Add any remarks..."
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
                 />
               </div>
 
-              <Button type="submit" className="w-full">Create Followup</Button>
+              <Button type="submit" className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Create Followup</Button>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      <Card>
+      <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
         <CardHeader>
           <CardTitle>All Follow-ups</CardTitle>
         </CardHeader>
@@ -198,7 +203,7 @@ export default function Followups() {
             </TableHeader>
             <TableBody>
               {followups.map((followup) => (
-                <TableRow key={followup.id}>
+                <TableRow key={followup.id} className="hover:bg-blue-50 transition-colors duration-150">
                   <TableCell className="font-medium">{followup.clients.name}</TableCell>
                   <TableCell>{followup.clients.contact_person_name}</TableCell>
                   <TableCell>{getModeBadge(followup.followup_mode)}</TableCell>
@@ -209,10 +214,10 @@ export default function Followups() {
                   <TableCell className="max-w-xs truncate">{followup.followup_remarks || 'N/A'}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => openEditDialog(followup)}>
+                      <Button variant="outline" size="sm" onClick={() => openEditDialog(followup)} className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
                         <Edit className="w-3 h-3" />
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => deleteFollowup(followup.id)}>
+                      <Button variant="outline" size="sm" onClick={() => deleteFollowup(followup.id)} className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
                         <Trash className="w-3 h-3" />
                       </Button>
                     </div>
@@ -225,7 +230,7 @@ export default function Followups() {
       </Card>
 
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent>
+        <DialogContent className="rounded-xl shadow-soft animate-fade-in">
           <DialogHeader>
             <DialogTitle>Edit Followup</DialogTitle>
           </DialogHeader>
@@ -280,6 +285,7 @@ export default function Followups() {
                 type="date"
                 value={formData.next_followup_date}
                 onChange={(e) => setFormData({...formData, next_followup_date: e.target.value})}
+                className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -289,10 +295,11 @@ export default function Followups() {
                 value={formData.followup_remarks}
                 onChange={(e) => setFormData({...formData, followup_remarks: e.target.value})}
                 placeholder="Add any remarks..."
+                className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
               />
             </div>
 
-            <Button type="submit" className="w-full">Update Followup</Button>
+            <Button type="submit" className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Update Followup</Button>
           </form>
         </DialogContent>
       </Dialog>

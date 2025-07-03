@@ -52,8 +52,8 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 font-inter animate-fade-in">
+      <Card className="w-full max-w-md rounded-xl shadow-soft transition-transform duration-200 hover:scale-105 hover:shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Growth Hub Manager</CardTitle>
           <CardDescription>
@@ -71,6 +71,7 @@ export default function Auth() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
+                className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
               />
             </div>
             <div className="space-y-2">
@@ -83,9 +84,14 @@ export default function Auth() {
                 placeholder="Enter your password"
                 required
                 minLength={6}
+                className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
+              disabled={loading}
+            >
               {loading ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Sign In')}
             </Button>
           </form>
