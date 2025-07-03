@@ -9,6 +9,9 @@ import { AppLayout } from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Clients from "./pages/Clients";
+import Payments from "./pages/Payments";
+import Followups from "./pages/Followups";
+import Leads from "./pages/Leads";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +36,27 @@ const App = () => (
               <ProtectedRoute>
                 <AppLayout>
                   <Clients />
+                </AppLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/payments" element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Payments />
+                </AppLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/followups" element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Followups />
+                </AppLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/leads" element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Leads />
                 </AppLayout>
               </ProtectedRoute>
             } />
