@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useClients, Client } from '@/hooks/useClients';
 import { toast } from '@/hooks/use-toast';
 import { useSearchParams } from 'react-router-dom';
+import { Trash2 } from 'lucide-react'; // Add this import for a delete icon
 
 const countries = [
   'United States', 'Canada', 'United Kingdom', 'Australia', 'Germany', 
@@ -41,6 +43,7 @@ export default function Clients() {
     status: 'active' as 'active' | 'discontinued' | 'hold',
     discontinue_reason: '',
   });
+  const [deletingClientId, setDeletingClientId] = useState<string | null>(null);
 
   useEffect(() => {
     // Handle URL parameters for filtering
@@ -166,6 +169,26 @@ export default function Clients() {
     setIsDialogOpen(true);
   };
 
+  const handleDelete = async (clientId: string) => {
+    if (!window.confirm('Are you sure you want to delete this client?')) return;
+    setDeletingClientId(clientId);
+    try {
+      await deleteClient(clientId);
+      toast({
+        title: "Deleted",
+        description: "Client deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete client",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingClientId(null);
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     const colors = {
       active: 'bg-primary text-primary-foreground',
@@ -176,14 +199,19 @@ export default function Clients() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64">Loading clients...</div>;
+    return(
+      <div className="flex items-center justify-center h-64">Loading clients...</div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Clients</h1>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isDialogOpen} onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (!open) resetForm();
+        }}>
           <DialogTrigger asChild>
             <Button onClick={resetForm}>Add Client</Button>
           </DialogTrigger>
@@ -366,6 +394,15 @@ export default function Clients() {
                     onClick={() => handleEdit(client)}
                   >
                     Edit
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(client.id)}
+                    disabled={deletingClientId === client.id}
+                    title="Delete client"
+                  >
+                    <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>

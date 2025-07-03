@@ -9,6 +9,9 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "jsx": "react-jsx", // for React 17+ with new JSX transform
+    "types": ["react", "react-dom"],
+    "target": "es2020",
     "noImplicitAny": false,
     "noUnusedParameters": false,
     "skipLibCheck": true,
