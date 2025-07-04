@@ -168,7 +168,9 @@ async function sendWhatsAppReminder(followup: any) {
     const twilioAccountSid = Deno.env.get("TWILIO_ACCOUNT_SID");
     const twilioAuthToken = Deno.env.get("TWILIO_AUTH_TOKEN");
     const twilioWhatsAppFrom = Deno.env.get("TWILIO_WHATSAPP_FROM");
-
+    console.log("Twilio WhatsApp From:", twilioWhatsAppFrom);
+    console.log("Twilio Account SID:", twilioAccountSid);
+    console.log("Twilio Auth Token:", twilioAuthToken);
     if (!twilioAccountSid || !twilioAuthToken || !twilioWhatsAppFrom) {
       return {
         success: false,
