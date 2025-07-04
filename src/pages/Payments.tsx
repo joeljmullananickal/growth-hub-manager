@@ -11,8 +11,9 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { usePayments, Payment } from '@/hooks/usePayments';
 import { useClients } from '@/hooks/useClients';
-import { Edit, Trash, Plus, DollarSign } from 'lucide-react';
+import { Edit, Trash, IndianRupee,} from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import { useLocation } from 'react-router-dom';
 
 export default function Payments() {
   const { payments, loading, createPayment, updatePayment, deletePayment } = usePayments();
@@ -32,6 +33,63 @@ export default function Payments() {
     last_paid_amount: '',
     payment_status: 'unpaid' as 'paid' | 'unpaid' | 'invoiced',
   });
+
+  const location = useLocation();
+
+  // Parse query params
+  const params = new URLSearchParams(location.search);
+  const renewals = params.get('renewals');
+  const paid = params.get('paid');
+  const unpaid = params.get('unpaid');
+
+  // Get current date info
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+  const twoMonthsAgo = new Date();
+  twoMonthsAgo.setMonth(now.getMonth() - 2);
+
+  // Filter payments based on query params
+  let filteredPayments = payments;
+
+  if (renewals === 'thisMonth') {
+    filteredPayments = payments.filter(p => {
+      if (!p.next_renewal_date) return false;
+      const renewalDate = new Date(p.next_renewal_date);
+      return (
+        renewalDate.getMonth() === currentMonth &&
+        renewalDate.getFullYear() === currentYear
+      );
+    });
+  } else if (paid === 'thisMonth') {
+    filteredPayments = payments.filter(p => {
+      if (!p.last_paid_date) return false;
+      const paidDate = new Date(p.last_paid_date);
+      return (
+        paidDate.getMonth() === currentMonth &&
+        paidDate.getFullYear() === currentYear &&
+        p.payment_status === 'paid'
+      );
+    });
+  } else if (unpaid === 'previousMonth') {
+    filteredPayments = payments.filter(p => {
+      if (!p.next_renewal_date) return false;
+      const renewalDate = new Date(p.next_renewal_date);
+      return (
+        renewalDate.getMonth() === lastMonth &&
+        renewalDate.getFullYear() === lastMonthYear &&
+        p.payment_status === 'unpaid'
+      );
+    });
+  } else if (unpaid === 'old') {
+    filteredPayments = payments.filter(p => {
+      if (!p.next_renewal_date) return false;
+      const renewalDate = new Date(p.next_renewal_date);
+      return renewalDate < twoMonthsAgo && p.payment_status === 'unpaid';
+    });
+  }
 
   const resetForm = () => {
     setFormData({
@@ -156,12 +214,12 @@ export default function Payments() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {payments.map((payment) => (
+              {filteredPayments.map((payment) => (
                 <TableRow key={payment.id} className="hover:bg-blue-50 transition-colors duration-150">
                   <TableCell className="font-medium">{payment.clients.name}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
-                      <DollarSign className="w-3 h-3" />
+                      <IndianRupee className="w-3 h-3" />
                       {payment.total_amount} {payment.currency}
                     </div>
                   </TableCell>
