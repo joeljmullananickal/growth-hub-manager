@@ -190,7 +190,7 @@ async function sendWhatsAppReminder(followup: any) {
         },
         body: new URLSearchParams({
           From: twilioWhatsAppFrom,
-          To: `whatsapp:${followup.clients.contact_number_1}`,
+          To: `whatsapp:+91${followup.clients.contact_number_1}`,
           Body: message,
         }),
       }
