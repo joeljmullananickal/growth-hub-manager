@@ -197,16 +197,33 @@ async function sendWhatsAppReminder(followup: any) {
     );
 
     if (response.ok) {
+      const data = await response.json();
+      if (data.error_code) {
+        // Twilio returned an error in the response body
+        return {
+          success: false,
+          message: `Twilio error: ${data.message} (code: ${data.error_code})`,
+        };
+      }
       return {
         success: true,
         message: `WhatsApp message sent to ${followup.clients.contact_number_1}`,
       };
     } else {
-      const errorData = await response.text();
-      return {
-        success: false,
-        message: `Failed to send WhatsApp: ${errorData}`,
-      };
+      let errorData;
+      try {
+        errorData = await response.json();
+        return {
+          success: false,
+          message: `Failed to send WhatsApp: ${errorData.message || JSON.stringify(errorData)}`,
+        };
+      } catch {
+        errorData = await response.text();
+        return {
+          success: false,
+          message: `Failed to send WhatsApp: ${errorData}`,
+        };
+      }
     }
   } catch (error) {
     return {
