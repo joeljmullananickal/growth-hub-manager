@@ -150,6 +150,14 @@ async function sendEmailReminder(followup: any) {
       `,
     });
 
+    // Check for errors in the response
+    if (emailResponse.error) {
+      return {
+        success: false,
+        message: `Resend error: ${emailResponse.error.message || JSON.stringify(emailResponse.error)}`,
+      };
+    }
+
     return {
       success: true,
       message: `Email sent successfully to ${followup.clients.email_id}`,
