@@ -133,7 +133,9 @@ export type Database = {
           followup_mode: Database["public"]["Enums"]["followup_mode"]
           followup_remarks: string | null
           followup_status: Database["public"]["Enums"]["followup_status"]
+          followup_type: string
           id: string
+          is_renewal_reminder: boolean | null
           next_followup_date: string | null
           payment_id: string | null
           updated_at: string
@@ -145,7 +147,9 @@ export type Database = {
           followup_mode: Database["public"]["Enums"]["followup_mode"]
           followup_remarks?: string | null
           followup_status?: Database["public"]["Enums"]["followup_status"]
+          followup_type?: string
           id?: string
+          is_renewal_reminder?: boolean | null
           next_followup_date?: string | null
           payment_id?: string | null
           updated_at?: string
@@ -157,7 +161,9 @@ export type Database = {
           followup_mode?: Database["public"]["Enums"]["followup_mode"]
           followup_remarks?: string | null
           followup_status?: Database["public"]["Enums"]["followup_status"]
+          followup_type?: string
           id?: string
+          is_renewal_reminder?: boolean | null
           next_followup_date?: string | null
           payment_id?: string | null
           updated_at?: string
@@ -253,7 +259,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_payment_renewal_followups: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       client_status: "active" | "discontinued" | "hold"
