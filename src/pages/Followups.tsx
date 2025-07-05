@@ -10,12 +10,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { useFollowups, Followup } from '@/hooks/useFollowups';
 import { useClients } from '@/hooks/useClients';
-import { Edit, Trash, Plus, Phone, Mail } from 'lucide-react';
+import { Edit, Trash, Plus, Phone, Mail, RefreshCw } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useLocation } from 'react-router-dom';
 
 export default function Followups() {
-  const { followups, loading, createFollowup, updateFollowup, deleteFollowup } = useFollowups();
+  const { followups, loading, createFollowup, updateFollowup, deleteFollowup, generateRenewalFollowups } = useFollowups();
   const { clients } = useClients();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -124,16 +124,25 @@ if (status) {
     <div className="space-y-6 font-inter animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Follow-ups</h1>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button
-              onClick={resetForm}
-              className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Followup
-            </Button>
-          </DialogTrigger>
+        <div className="flex gap-2">
+          <Button
+            onClick={generateRenewalFollowups}
+            variant="outline"
+            className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Generate Renewal Followups
+          </Button>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button
+                onClick={resetForm}
+                className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Followup
+              </Button>
+            </DialogTrigger>
           <DialogContent className="rounded-xl shadow-soft animate-fade-in">
             <DialogHeader>
               <DialogTitle>Create New Followup</DialogTitle>
@@ -191,8 +200,9 @@ if (status) {
 
               <Button type="submit" className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Create Followup</Button>
             </form>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
@@ -205,6 +215,7 @@ if (status) {
               <TableRow>
                 <TableHead>Client</TableHead>
                 <TableHead>Contact Person</TableHead>
+                <TableHead>Type</TableHead>
                 <TableHead>Mode</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Next Followup</TableHead>
@@ -217,6 +228,11 @@ if (status) {
                 <TableRow key={followup.id} className="hover:bg-blue-50 transition-colors duration-150">
                   <TableCell className="font-medium">{followup.clients.name}</TableCell>
                   <TableCell>{followup.clients.contact_person_name}</TableCell>
+                  <TableCell>
+                    <Badge variant={followup.followup_type === 'payment_renewal' ? 'default' : 'secondary'}>
+                      {followup.followup_type === 'payment_renewal' ? 'Payment Renewal' : 'Manual'}
+                    </Badge>
+                  </TableCell>
                   <TableCell>{getModeBadge(followup.followup_mode)}</TableCell>
                   <TableCell>{getStatusBadge(followup.followup_status)}</TableCell>
                   <TableCell>
