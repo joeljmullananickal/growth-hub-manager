@@ -90,12 +90,9 @@ export default function Dashboard() {
         }).length || 0;
 
         // Fetch followup stats
-        const { data: followups } = await supabase
-          .from('payment_followups')
-          .select('followup_status, next_followup_date');
 
-        const needFollowup = followups?.filter(f => 
-          f.followup_status === 'pending'
+        const needFollowup = payments?.filter(
+        p => p.payment_status === 'unpaid' || p.payment_status === 'invoiced'
         ).length || 0;
 
         // Fetch leads stats
@@ -161,13 +158,13 @@ export default function Dashboard() {
         navigate('/payments?unpaid=old');
         break;
       case 'needFollowup':
-        navigate('/followups?status=pending');
+        navigate('/payments?followup=due');
         break;
       case 'newLeads':
         navigate('/leads?period=thisMonth');
         break;
       case 'leadsToFollowup':
-        navigate('/leads?followup=due');
+        navigate('/followups?leadFollowup=due');
         break;
       case 'veryHotLeads':
         navigate('/leads?status=very_hot');

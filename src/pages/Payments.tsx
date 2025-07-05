@@ -41,6 +41,7 @@ export default function Payments() {
   const renewals = params.get('renewals');
   const paid = params.get('paid');
   const unpaid = params.get('unpaid');
+  const followup = params.get('followup');
 
   // Get current date info
   const now = new Date();
@@ -89,7 +90,12 @@ export default function Payments() {
       const renewalDate = new Date(p.next_renewal_date);
       return renewalDate < twoMonthsAgo && p.payment_status === 'unpaid';
     });
+  } else if (followup === 'due') {
+    filteredPayments = payments.filter(
+      p => p.payment_status === 'unpaid' || p.payment_status === 'invoiced'
+    );
   }
+
 
   const resetForm = () => {
     setFormData({

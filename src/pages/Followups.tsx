@@ -8,18 +8,23 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { useFollowups, Followup } from '@/hooks/useFollowups';
+import { useFollowups, Followup,} from '@/hooks/useFollowups';
 import { useClients } from '@/hooks/useClients';
+import { useLeads } from '@/hooks/useLeads'; // Import your leads hook
 import { Edit, Trash, Plus, Phone, Mail, RefreshCw } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useLocation } from 'react-router-dom';
+import { Lead } from '@/hooks/useLeads';
 
 export default function Followups() {
   const { followups, loading, createFollowup, updateFollowup, deleteFollowup, generateRenewalFollowups } = useFollowups();
   const { clients } = useClients();
+  const { leads, updateLead } = useLeads(); // Get leads and update function
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isEditLeadOpen, setIsEditLeadOpen] = useState(false);
   const [editingFollowup, setEditingFollowup] = useState<Followup | null>(null);
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [formData, setFormData] = useState({
     client_id: '',
     payment_id: '',
@@ -28,16 +33,32 @@ export default function Followups() {
     followup_remarks: '',
     followup_status: 'pending' as 'pending' | 'completed' | 'scheduled',
   });
+  const [leadFormData, setLeadFormData] = useState({
+    customer_name: '',
+    contact_number: '',
+    status: '',
+    next_followup_date: '',
+    // add other fields as needed
+  });
 
-const location = useLocation();
-const params = new URLSearchParams(location.search);
-const status = params.get('status'); 
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const status = params.get('status'); 
+  const leadFollowup = params.get('leadFollowup');
+
   // Example filtering logic:
-let filteredFollowups = followups;
-if (status) {
-  filteredFollowups = filteredFollowups.filter(f => f.followup_status === status);
-}
+  let filteredFollowups = followups;
+  if (status) {
+    filteredFollowups = filteredFollowups.filter(f => f.followup_status === status);
+  }
 
+  let filteredLeads: Lead[] = [];
+  if (leadFollowup === 'due') {
+    const today = new Date().toISOString().slice(0, 10);
+    filteredLeads = leads.filter(
+      l => l.next_followup_date && l.next_followup_date <= today
+    );
+  }
 
   const resetForm = () => {
     setFormData({
@@ -91,6 +112,18 @@ if (status) {
       followup_status: followup.followup_status,
     });
     setIsEditOpen(true);
+  };
+
+  const openEditLeadDialog = (lead: Lead) => {
+    setEditingLead(lead);
+    setLeadFormData({
+      customer_name: lead.customer_name || '',
+      contact_number: lead.contact_number || '',
+      status: lead.status || '',
+      next_followup_date: lead.next_followup_date || '',
+      // add other fields as needed
+    });
+    setIsEditLeadOpen(true);
   };
 
   const getStatusBadge = (status: string) => {
@@ -256,6 +289,40 @@ if (status) {
         </CardContent>
       </Card>
 
+      {leadFollowup === 'due' && (
+        <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
+          <CardHeader>
+            <CardTitle>Leads to Follow Up</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Next Followup</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredLeads.map((lead) => (
+                  <TableRow key={lead.id}>
+                    <TableCell>{lead.customer_name}</TableCell>
+                    <TableCell>{lead.contact_number}</TableCell>
+                    <TableCell>{lead.status}</TableCell>
+                    <TableCell>{lead.next_followup_date}</TableCell>
+                    <TableCell>
+                      <Button onClick={() => openEditLeadDialog(lead)}>Edit</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="rounded-xl shadow-soft animate-fade-in">
           <DialogHeader>
@@ -327,6 +394,63 @@ if (status) {
             </div>
 
             <Button type="submit" className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Update Followup</Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isEditLeadOpen} onOpenChange={setIsEditLeadOpen}>
+        <DialogContent className="rounded-xl shadow-soft animate-fade-in">
+          <DialogHeader>
+            <DialogTitle>Edit Lead</DialogTitle>
+          </DialogHeader>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (!editingLead) return;
+              await updateLead(editingLead.id, {
+                customer_name: leadFormData.customer_name,
+                contact_number: leadFormData.contact_number,
+                status: leadFormData.status as 'very_hot' | 'hot' | 'warm' | 'remove_close',
+                next_followup_date: leadFormData.next_followup_date,
+                // add other fields as needed
+              });
+              setIsEditLeadOpen(false);
+              setEditingLead(null);
+            }}
+            className="space-y-4"
+          >
+            <div>
+              <Label htmlFor="customer_name">Name</Label>
+              <Input
+                value={leadFormData.customer_name}
+                onChange={(e) => setLeadFormData({ ...leadFormData, customer_name: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="contact_number">Contact</Label>
+              <Input
+                value={leadFormData.contact_number}
+                onChange={(e) => setLeadFormData({ ...leadFormData, contact_number: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="status">Status</Label>
+              <Input
+                value={leadFormData.status}
+                onChange={(e) => setLeadFormData({ ...leadFormData, status: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="next_followup_date">Next Followup Date</Label>
+              <Input
+                type="date"
+                value={leadFormData.next_followup_date}
+                onChange={(e) => setLeadFormData({ ...leadFormData, next_followup_date: e.target.value })}
+              />
+            </div>
+            <Button type="submit" className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
+              Update Lead
+            </Button>
           </form>
         </DialogContent>
       </Dialog>
