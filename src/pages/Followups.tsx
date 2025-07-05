@@ -12,6 +12,7 @@ import { useFollowups, Followup } from '@/hooks/useFollowups';
 import { useClients } from '@/hooks/useClients';
 import { Edit, Trash, Plus, Phone, Mail } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import { useLocation } from 'react-router-dom';
 
 export default function Followups() {
   const { followups, loading, createFollowup, updateFollowup, deleteFollowup } = useFollowups();
@@ -27,6 +28,16 @@ export default function Followups() {
     followup_remarks: '',
     followup_status: 'pending' as 'pending' | 'completed' | 'scheduled',
   });
+
+const location = useLocation();
+const params = new URLSearchParams(location.search);
+const status = params.get('status'); 
+  // Example filtering logic:
+let filteredFollowups = followups;
+if (status) {
+  filteredFollowups = filteredFollowups.filter(f => f.followup_status === status);
+}
+
 
   const resetForm = () => {
     setFormData({
@@ -202,7 +213,7 @@ export default function Followups() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {followups.map((followup) => (
+              {filteredFollowups.map((followup) => (
                 <TableRow key={followup.id} className="hover:bg-blue-50 transition-colors duration-150">
                   <TableCell className="font-medium">{followup.clients.name}</TableCell>
                   <TableCell>{followup.clients.contact_person_name}</TableCell>
