@@ -5,6 +5,9 @@ import { ArrowRight, Star, Zap, Shield, Smartphone, Globe, Users } from 'lucide-
 import heroBg from '@/assets/hero-bg.jpg';
 import sectionBg from '@/assets/section-bg.jpg';
 import techIcons from '@/assets/tech-icons.jpg';
+import abstractBg from '@/assets/abstract-bg.jpg';
+import floatingShapes from '@/assets/floating-shapes.jpg';
+import wavePattern from '@/assets/wave-pattern.jpg';
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -90,26 +93,29 @@ const Index = () => {
         {/* Overlay with gradient */}
         <div className="absolute inset-0 bg-gradient-hero"></div>
         
-        {/* Floating elements */}
-        <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-primary/10 animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 rounded-full bg-accent/10 animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 rounded-full bg-primary/20 animate-float" style={{ animationDelay: '4s' }}></div>
+        {/* Advanced floating elements with morphing */}
+        <div className="absolute top-20 left-20 w-32 h-32 bg-primary/10 animate-float animate-morphing backdrop-blur-sm"></div>
+        <div className="absolute bottom-20 right-20 w-24 h-24 bg-accent/10 animate-particles rounded-full" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-10 w-16 h-16 bg-primary/20 animate-float rounded-full" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-1/3 right-1/4 w-20 h-20 bg-accent/15 animate-particles rounded-full" style={{ animationDelay: '6s' }}></div>
+        <div className="absolute bottom-1/3 left-1/4 w-12 h-12 bg-primary/25 animate-float rounded-full" style={{ animationDelay: '8s' }}></div>
 
-        <div className={`relative z-10 text-center px-6 max-w-6xl mx-auto ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-          {/* Glassmorphism hero card */}
-          <div className="glass rounded-3xl p-12 mb-8">
-            <h1 className="font-playfair text-6xl md:text-8xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent leading-tight">
+        <div className={`relative z-10 text-center px-6 max-w-6xl mx-auto ${isVisible ? 'animate-bounce-in' : 'opacity-0'}`}>
+          {/* Advanced glassmorphism hero card */}
+          <div className="glass rounded-3xl p-12 mb-8 hover-lift relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-primary opacity-5 animate-rotate-gradient"></div>
+            <h1 className="font-playfair text-6xl md:text-8xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent leading-tight animate-text-glow">
               Experience the Future
             </h1>
-            <p className="font-poppins text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="font-poppins text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed relative z-10">
               Discover a revolutionary platform that combines stunning aesthetics with powerful functionality. 
               Built for modern teams who demand excellence.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center relative z-10">
               <Button 
                 size="lg" 
-                className="bg-gradient-primary hover:scale-105 transition-all duration-300 text-lg px-8 py-4 rounded-full hover-glow font-montserrat font-semibold"
+                className="bg-gradient-primary hover:scale-110 transition-all duration-500 text-lg px-8 py-4 rounded-full hover-glow hover-ripple font-montserrat font-semibold relative overflow-hidden"
               >
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -117,14 +123,14 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="glass border-primary/30 hover:border-primary hover:scale-105 transition-all duration-300 text-lg px-8 py-4 rounded-full font-montserrat font-semibold"
+                className="glass border-primary/30 hover:border-primary hover:scale-110 transition-all duration-500 text-lg px-8 py-4 rounded-full font-montserrat font-semibold hover-lift"
               >
                 Watch Demo
               </Button>
             </div>
           </div>
 
-          {/* Stats */}
+          {/* Enhanced stats with staggered animations */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             {[
               { number: "10M+", label: "Happy Users" },
@@ -133,22 +139,27 @@ const Index = () => {
             ].map((stat, index) => (
               <div 
                 key={index} 
-                className={`glass rounded-2xl p-6 hover-lift ${isVisible ? 'animate-scale-in' : 'opacity-0'}`}
-                style={{ animationDelay: `${index * 0.2}s` }}
+                className={`glass rounded-2xl p-6 hover-lift hover-glow ${isVisible ? (index % 2 === 0 ? 'animate-slide-left' : 'animate-slide-right') : 'opacity-0'} relative overflow-hidden`}
+                style={{ animationDelay: `${index * 0.3}s` }}
               >
-                <div className="font-montserrat text-3xl font-bold text-primary mb-2">{stat.number}</div>
-                <div className="font-poppins text-muted-foreground">{stat.label}</div>
+                <div className="absolute inset-0 bg-gradient-accent opacity-5"></div>
+                <div className="font-montserrat text-3xl font-bold text-primary mb-2 animate-text-glow relative z-10">{stat.number}</div>
+                <div className="font-poppins text-muted-foreground relative z-10">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-24 relative">
+      {/* Enhanced Features Section */}
+      <section className="py-24 relative overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: `url(${sectionBg})` }}
+          style={{ backgroundImage: `url(${abstractBg})` }}
+        ></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{ backgroundImage: `url(${floatingShapes})` }}
         ></div>
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -165,19 +176,20 @@ const Index = () => {
             {features.map((feature, index) => (
               <Card 
                 key={index}
-                className={`glass hover-lift group cursor-pointer border-0 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className={`glass hover-lift hover-ripple group cursor-pointer border-0 relative overflow-hidden ${isVisible ? 'animate-bounce-in' : 'opacity-0'}`}
+                style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <CardHeader className="text-center pb-4">
-                  <div className="mx-auto w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
+                <CardHeader className="text-center pb-4 relative z-10">
+                  <div className="mx-auto w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 animate-float" style={{ animationDelay: `${index * 2}s` }}>
                     {feature.icon}
                   </div>
-                  <CardTitle className="font-montserrat text-xl font-semibold">
+                  <CardTitle className="font-montserrat text-xl font-semibold group-hover:text-primary transition-colors duration-300">
                     {feature.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <CardDescription className="font-poppins text-center text-muted-foreground leading-relaxed">
+                <CardContent className="relative z-10">
+                  <CardDescription className="font-poppins text-center text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
@@ -187,9 +199,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-gradient-secondary">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* Enhanced Testimonials Section */}
+      <section className="py-24 bg-gradient-secondary relative overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-10"
+          style={{ backgroundImage: `url(${wavePattern})` }}
+        ></div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-5xl font-bold mb-6 text-foreground">
               What Our Users Say
@@ -203,21 +219,22 @@ const Index = () => {
             {testimonials.map((testimonial, index) => (
               <Card 
                 key={index}
-                className={`glass hover-lift ${isVisible ? 'animate-scale-in' : 'opacity-0'}`}
-                style={{ animationDelay: `${index * 0.2}s` }}
+                className={`glass hover-lift hover-glow group relative overflow-hidden ${isVisible ? (index === 1 ? 'animate-bounce-in' : index % 2 === 0 ? 'animate-slide-left' : 'animate-slide-right') : 'opacity-0'}`}
+                style={{ animationDelay: `${index * 0.25}s` }}
               >
-                <CardHeader>
+                <div className="absolute inset-0 bg-gradient-accent opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+                <CardHeader className="relative z-10">
                   <div className="flex mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-primary text-primary" />
+                      <Star key={i} className="w-5 h-5 fill-primary text-primary group-hover:scale-110 transition-transform duration-300" style={{ animationDelay: `${i * 0.1}s` }} />
                     ))}
                   </div>
-                  <CardDescription className="font-poppins text-foreground leading-relaxed text-lg">
+                  <CardDescription className="font-poppins text-foreground leading-relaxed text-lg group-hover:text-primary transition-colors duration-300">
                     "{testimonial.content}"
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="font-montserrat font-semibold text-foreground">{testimonial.name}</div>
+                <CardContent className="relative z-10">
+                  <div className="font-montserrat font-semibold text-foreground group-hover:text-primary transition-colors duration-300">{testimonial.name}</div>
                   <div className="font-poppins text-muted-foreground text-sm">{testimonial.role}</div>
                 </CardContent>
               </Card>
@@ -235,19 +252,20 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-primary opacity-90"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
-          <div className="glass rounded-3xl p-12">
-            <h2 className="font-playfair text-5xl font-bold mb-6 text-white">
+          <div className="glass rounded-3xl p-12 hover-lift relative overflow-hidden animate-morphing">
+            <div className="absolute inset-0 bg-gradient-primary opacity-10 animate-rotate-gradient"></div>
+            <h2 className="font-playfair text-5xl font-bold mb-6 text-white animate-text-glow relative z-10">
               Ready to Get Started?
             </h2>
-            <p className="font-poppins text-xl text-white/90 mb-8 leading-relaxed">
+            <p className="font-poppins text-xl text-white/90 mb-8 leading-relaxed relative z-10">
               Join millions of users who have already transformed their workflow. 
               Start your free trial today and experience the difference.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
               <Button 
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all duration-300 text-lg px-8 py-4 rounded-full font-montserrat font-semibold"
+                className="bg-white text-primary hover:bg-white/90 hover:scale-110 transition-all duration-500 text-lg px-8 py-4 rounded-full font-montserrat font-semibold hover-ripple relative overflow-hidden"
               >
                 Start Free Trial
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -255,7 +273,7 @@ const Index = () => {
               <Button 
                 variant="outline"
                 size="lg"
-                className="border-white/30 text-white hover:bg-white/10 hover:border-white hover:scale-105 transition-all duration-300 text-lg px-8 py-4 rounded-full font-montserrat font-semibold"
+                className="border-white/30 text-white hover:bg-white/10 hover:border-white hover:scale-110 transition-all duration-500 text-lg px-8 py-4 rounded-full font-montserrat font-semibold hover-glow"
               >
                 Contact Sales
               </Button>
