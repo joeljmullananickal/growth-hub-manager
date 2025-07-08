@@ -54,9 +54,19 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative font-inter animate-fade-in py-12 px-4" style={{ backgroundImage: `url(${abstractBg})` }}>
-      <div className="absolute inset-0 bg-gradient-accent pointer-events-none"></div>
+      {/* Video background placeholder - replace with your MP4 */}
+      {/* <video 
+        autoPlay 
+        muted 
+        loop 
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+      >
+        <source src="/path-to-your-video.mp4" type="video/mp4" />
+      </video> */}
+      <div className="absolute inset-0 bg-gradient-accent pointer-events-none animate-morphing opacity-70"></div>
       <div className="relative z-10 w-full max-w-md mx-auto">
-        <Card className="w-full max-w-md rounded-xl shadow-soft transition-transform duration-200 hover:scale-105 hover:shadow-lg p-8">
+        <Card className="w-full max-w-md rounded-xl shadow-soft transition-transform duration-200 hover:scale-105 hover:shadow-lg p-8 glass hover-lift">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Growth Hub Manager</CardTitle>
             <CardDescription>
@@ -92,6 +102,7 @@ export default function Auth() {
               </div>
               <Button
                 type="submit"
+                variant="gradient"
                 className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
                 disabled={loading}
               >

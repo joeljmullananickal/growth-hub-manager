@@ -13,7 +13,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar className="animate-slide-left" />
+        <AppSidebar />
         <div className="flex-1 flex flex-col">
           <header className="h-14 flex items-center justify-between border-b px-4 bg-background/70 glass shadow-lg animate-fade-in sticky top-0 z-20">
             <div className="flex items-center gap-2">
@@ -21,7 +21,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               <h1 className="font-bold text-2xl bg-gradient-to-r from-violet-500 to-green-500 bg-clip-text text-transparent font-playfair tracking-wide drop-shadow">Growth Hub Manager</h1>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground font-mono">
+              <span className="text-sm text-foreground font-mono font-bold bg-gradient-primary bg-clip-text text-transparent">
                 {user?.email}
               </span>
               <Button variant="outline" size="sm" onClick={signOut}>

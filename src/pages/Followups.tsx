@@ -155,8 +155,8 @@ export default function Followups() {
   }
 
   return (
-    <div className="min-h-screen bg-cover bg-center relative animate-fade-in py-0 px-0" style={{ backgroundImage: `url(${floatingShapes})` }}>
-      <div className="absolute inset-0 bg-gradient-hero pointer-events-none"></div>
+    <div className="min-h-screen bg-cover bg-center relative animate-fade-in py-0 px-0 animate-particles" style={{ backgroundImage: `url(${floatingShapes})` }}>
+      <div className="absolute inset-0 bg-gradient-hero pointer-events-none opacity-70 animate-morphing"></div>
       <div className="relative z-10 w-full max-w-6xl mx-auto pt-8 px-6 pb-12 rounded-3xl">
         <div className="flex items-center justify-between mb-6">
           <div className="relative">
@@ -176,6 +176,7 @@ export default function Followups() {
               <DialogTrigger asChild>
                 <Button
                   onClick={resetForm}
+                  variant="black"
                   className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
                 >
                   <Plus className="w-4 h-4 mr-2" />
