@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import heroBg from '@/assets/hero-bg.jpg';
 
 interface DashboardStats {
   activeClients: number;
@@ -191,19 +192,20 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6 font-inter animate-fade-in">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+    <div className="min-h-screen bg-cover bg-center relative animate-fade-in space-y-6 font-inter" style={{ backgroundImage: `url(${heroBg})` }}>
+      <div className="absolute inset-0 bg-gradient-hero pointer-events-none"></div>
+      <div className="relative z-10 flex items-center justify-between mb-8 px-8 pt-8">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-pink-500 drop-shadow-lg font-playfair animate-bounce-in">Dashboard</h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-8 pb-12">
         {dashboardCards.map((card) => (
           <Card
             key={card.key}
-            className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+            className="cursor-pointer rounded-xl shadow-soft glass transition-transform duration-200 hover:scale-105 hover:shadow-lg hover-lift"
             onClick={() => handleCardClick(card.key)}
           >
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+              <CardTitle className="text-md font-medium">{card.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className={`text-2xl font-bold ${card.color}`}>

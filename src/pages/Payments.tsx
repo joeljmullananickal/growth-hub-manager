@@ -14,6 +14,7 @@ import { useClients } from '@/hooks/useClients';
 import { Edit, Trash, IndianRupee,} from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useLocation } from 'react-router-dom';
+import techIconBg from '@/assets/tech-icons.jpg';
 
 export default function Payments() {
   const { payments, loading, createPayment, updatePayment, deletePayment } = usePayments();
@@ -191,297 +192,302 @@ export default function Payments() {
   }
 
   return (
-    <div className="space-y-6 font-inter animate-fade-in">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Payments</h1>
-        <Button
-          onClick={() => {
-              resetForm();
-              setIsCreateOpen(true);
-            }}
-          className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
-        >
-          Add Payment
-        </Button>
-      </div>
-      <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
-        <CardHeader>
-          <CardTitle>All Payments</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Client</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredPayments.map((payment) => (
-                <TableRow key={payment.id} className="hover:bg-blue-50 transition-colors duration-150">
-                  <TableCell className="font-medium">{payment.clients.name}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <IndianRupee className="w-3 h-3" />
-                      {payment.total_amount} {payment.currency}
-                    </div>
-                  </TableCell>
-                  <TableCell>{getStatusBadge(payment.payment_status)}</TableCell>
-                  <TableCell>
-                    {payment.last_paid_date ? format(parseISO(payment.last_paid_date), 'MMM dd, yyyy') : 'N/A'}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => openEditDialog(payment)}>
-                        <Edit className="w-3 h-3" />
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={() => deletePayment(payment.id)}>
-                        <Trash className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  </TableCell>
+    <div className="min-h-screen bg-cover relative animate-fade-in space-y-6 font-inter" style={{ backgroundImage: `url(${techIconBg})` }}>
+      <div className="relative z-10 w-full max-w-6xl mx-auto pt-8 px-6 pb-12 rounded-3xl">
+        <div className="flex items-center justify-between mb-6">
+          <div className="relative">
+            <span className="absolute inset-0 rounded-lg -z-10"></span>
+            <h1 className="text-3xl md:text-4xl font-extrabold text--500 drop-shadow-2xl font-playfair animate-slide-right px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Payments</h1>
+          </div>
+          <Button
+            onClick={() => {
+                resetForm();
+                setIsCreateOpen(true);
+              }}
+            className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
+          >
+            Add Payment
+          </Button>
+        </div>
+        <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
+          <CardHeader>
+            <CardTitle>All Payments</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Client</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <DialogContent className="max-w-2xl rounded-xl shadow-soft animate-fade-in">
-          <DialogHeader>
-            <DialogTitle>Add Payment</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleAddPayment} className="space-y-4">
-            {/* --- Your form fields here, similar to the edit form --- */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="client_id">Client</Label>
-                <Select value={formData.client_id} onValueChange={(value) => setFormData({...formData, client_id: value})}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a client" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {clients.map((client) => (
-                      <SelectItem key={client.id} value={client.id}>
-                        {client.name} - {client.contact_person_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              </TableHeader>
+              <TableBody>
+                {filteredPayments.map((payment) => (
+                  <TableRow key={payment.id} className="hover:bg-blue-50 transition-colors duration-150">
+                    <TableCell className="font-medium">{payment.clients.name}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <IndianRupee className="w-3 h-3" />
+                        {payment.total_amount} {payment.currency}
+                      </div>
+                    </TableCell>
+                    <TableCell>{getStatusBadge(payment.payment_status)}</TableCell>
+                    <TableCell>
+                      {payment.last_paid_date ? format(parseISO(payment.last_paid_date), 'MMM dd, yyyy') : 'N/A'}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => openEditDialog(payment)}>
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => deletePayment(payment.id)}>
+                          <Trash className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+          <DialogContent className="max-w-2xl rounded-xl shadow-soft animate-fade-in">
+            <DialogHeader>
+              <DialogTitle>Add Payment</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleAddPayment} className="space-y-4">
+              {/* --- Your form fields here, similar to the edit form --- */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="client_id">Client</Label>
+                  <Select value={formData.client_id} onValueChange={(value) => setFormData({...formData, client_id: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a client" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clients.map((client) => (
+                        <SelectItem key={client.id} value={client.id}>
+                          {client.name} - {client.contact_person_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="amount">Amount</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={formData.amount}
+                    onChange={(e) => setFormData({...formData, amount: e.target.value})}
+                    required
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="subscription_plan">Subscription Plan</Label>
+                  <Select value={formData.subscription_plan} onValueChange={(value: 'monthly' | '3_month' | '6_month' | 'yearly') => setFormData({...formData, subscription_plan: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="3_month">3 Months</SelectItem>
+                      <SelectItem value="6_month">6 Months</SelectItem>
+                      <SelectItem value="yearly">Yearly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="currency">Currency</Label>
+                  <Input
+                    value={formData.currency}
+                    onChange={(e) => setFormData({...formData, currency: e.target.value})}
+                    required
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="need_gst_bill"
+                  checked={formData.need_gst_bill}
+                  onCheckedChange={(checked) => setFormData({...formData, need_gst_bill: !!checked})}
+                />
+                <Label htmlFor="need_gst_bill">Need GST Bill</Label>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="commission">Commission</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={formData.commission}
+                    onChange={(e) => setFormData({...formData, commission: e.target.value})}
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="last_paid_amount">Last Paid Amount</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={formData.last_paid_amount}
+                    onChange={(e) => setFormData({...formData, last_paid_amount: e.target.value})}
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  />
+                </div>
               </div>
               <div>
-                <Label htmlFor="amount">Amount</Label>
+                <Label htmlFor="last_paid_date">Last Paid Date</Label>
                 <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.amount}
-                  onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  required
+                  type="date"
+                  value={formData.last_paid_date}
+                  onChange={(e) => setFormData({...formData, last_paid_date: e.target.value})}
                   className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
                 />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="subscription_plan">Subscription Plan</Label>
-                <Select value={formData.subscription_plan} onValueChange={(value: 'monthly' | '3_month' | '6_month' | 'yearly') => setFormData({...formData, subscription_plan: value})}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="3_month">3 Months</SelectItem>
-                    <SelectItem value="6_month">6 Months</SelectItem>
-                    <SelectItem value="yearly">Yearly</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="currency">Currency</Label>
-                <Input
-                  value={formData.currency}
-                  onChange={(e) => setFormData({...formData, currency: e.target.value})}
-                  required
+                <Label htmlFor="payment_remarks">Remarks</Label>
+                <Textarea
+                  value={formData.payment_remarks}
+                  onChange={(e) => setFormData({...formData, payment_remarks: e.target.value})}
+                  placeholder="Add any remarks..."
                   className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
                 />
               </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="need_gst_bill"
-                checked={formData.need_gst_bill}
-                onCheckedChange={(checked) => setFormData({...formData, need_gst_bill: !!checked})}
-              />
-              <Label htmlFor="need_gst_bill">Need GST Bill</Label>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="commission">Commission</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.commission}
-                  onChange={(e) => setFormData({...formData, commission: e.target.value})}
-                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
-                />
+              <Button type="submit" className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
+                Add Payment
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Edit Payment</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleEdit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="client_id">Client</Label>
+                  <Select value={formData.client_id} onValueChange={(value) => setFormData({...formData, client_id: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a client" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clients.map((client) => (
+                        <SelectItem key={client.id} value={client.id}>
+                          {client.name} - {client.contact_person_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <Label htmlFor="amount">Amount</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={formData.amount}
+                    onChange={(e) => setFormData({...formData, amount: e.target.value})}
+                    required
+                  />
+                </div>
               </div>
-              <div>
-                <Label htmlFor="last_paid_amount">Last Paid Amount</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.last_paid_amount}
-                  onChange={(e) => setFormData({...formData, last_paid_amount: e.target.value})}
-                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
-                />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="last_paid_date">Last Paid Date</Label>
-              <Input
-                type="date"
-                value={formData.last_paid_date}
-                onChange={(e) => setFormData({...formData, last_paid_date: e.target.value})}
-                className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div>
-              <Label htmlFor="payment_remarks">Remarks</Label>
-              <Textarea
-                value={formData.payment_remarks}
-                onChange={(e) => setFormData({...formData, payment_remarks: e.target.value})}
-                placeholder="Add any remarks..."
-                className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <Button type="submit" className="w-full rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
-              Add Payment
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Edit Payment</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleEdit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="client_id">Client</Label>
-                <Select value={formData.client_id} onValueChange={(value) => setFormData({...formData, client_id: value})}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a client" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {clients.map((client) => (
-                      <SelectItem key={client.id} value={client.id}>
-                        {client.name} - {client.contact_person_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <Label htmlFor="amount">Amount</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.amount}
-                  onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  required
-                />
-              </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="subscription_plan">Subscription Plan</Label>
-                <Select value={formData.subscription_plan} onValueChange={(value: 'monthly' | '3_month' | '6_month' | 'yearly') => setFormData({...formData, subscription_plan: value})}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="3_month">3 Months</SelectItem>
-                    <SelectItem value="6_month">6 Months</SelectItem>
-                    <SelectItem value="yearly">Yearly</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="subscription_plan">Subscription Plan</Label>
+                  <Select value={formData.subscription_plan} onValueChange={(value: 'monthly' | '3_month' | '6_month' | 'yearly') => setFormData({...formData, subscription_plan: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="3_month">3 Months</SelectItem>
+                      <SelectItem value="6_month">6 Months</SelectItem>
+                      <SelectItem value="yearly">Yearly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="payment_status">Payment Status</Label>
+                  <Select value={formData.payment_status} onValueChange={(value: 'paid' | 'unpaid' | 'invoiced') => setFormData({...formData, payment_status: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="paid">Paid</SelectItem>
+                      <SelectItem value="unpaid">Unpaid</SelectItem>
+                      <SelectItem value="invoiced">Invoiced</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="commission">Commission</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={formData.commission}
+                    onChange={(e) => setFormData({...formData, commission: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="last_paid_amount">Last Paid Amount</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={formData.last_paid_amount}
+                    onChange={(e) => setFormData({...formData, last_paid_amount: e.target.value})}
+                  />
+                </div>
               </div>
 
               <div>
-                <Label htmlFor="payment_status">Payment Status</Label>
-                <Select value={formData.payment_status} onValueChange={(value: 'paid' | 'unpaid' | 'invoiced') => setFormData({...formData, payment_status: value})}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="paid">Paid</SelectItem>
-                    <SelectItem value="unpaid">Unpaid</SelectItem>
-                    <SelectItem value="invoiced">Invoiced</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="commission">Commission</Label>
+                <Label htmlFor="last_paid_date">Last Paid Date</Label>
                 <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.commission}
-                  onChange={(e) => setFormData({...formData, commission: e.target.value})}
+                  type="date"
+                  value={formData.last_paid_date}
+                  onChange={(e) => setFormData({...formData, last_paid_date: e.target.value})}
                 />
               </div>
 
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="need_gst_bill"
+                  checked={formData.need_gst_bill}
+                  onCheckedChange={(checked) => setFormData({...formData, need_gst_bill: !!checked})}
+                />
+                <Label htmlFor="need_gst_bill">Need GST Bill</Label>
+              </div>
+
               <div>
-                <Label htmlFor="last_paid_amount">Last Paid Amount</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.last_paid_amount}
-                  onChange={(e) => setFormData({...formData, last_paid_amount: e.target.value})}
+                <Label htmlFor="payment_remarks">Remarks</Label>
+                <Textarea
+                  value={formData.payment_remarks}
+                  onChange={(e) => setFormData({...formData, payment_remarks: e.target.value})}
+                  placeholder="Add any remarks..."
                 />
               </div>
-            </div>
 
-            <div>
-              <Label htmlFor="last_paid_date">Last Paid Date</Label>
-              <Input
-                type="date"
-                value={formData.last_paid_date}
-                onChange={(e) => setFormData({...formData, last_paid_date: e.target.value})}
-              />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="need_gst_bill"
-                checked={formData.need_gst_bill}
-                onCheckedChange={(checked) => setFormData({...formData, need_gst_bill: !!checked})}
-              />
-              <Label htmlFor="need_gst_bill">Need GST Bill</Label>
-            </div>
-
-            <div>
-              <Label htmlFor="payment_remarks">Remarks</Label>
-              <Textarea
-                value={formData.payment_remarks}
-                onChange={(e) => setFormData({...formData, payment_remarks: e.target.value})}
-                placeholder="Add any remarks..."
-              />
-            </div>
-
-            <Button type="submit" className="w-full">Update Payment</Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+              <Button type="submit" className="w-full">Update Payment</Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }
