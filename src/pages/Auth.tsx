@@ -65,8 +65,8 @@ export default function Auth() {
         <source src="/path-to-your-video.mp4" type="video/mp4" />
       </video> */}
       <div className="absolute inset-0 bg-gradient-accent pointer-events-none animate-morphing opacity-70"></div>
-      <div className="relative z-10 w-full max-w-md mx-auto">
-        <Card className="w-full max-w-md rounded-xl shadow-soft transition-transform duration-200 hover:scale-105 hover:shadow-lg p-8 glass hover-lift">
+      <div className="relative z-20 w-full max-w-md mx-auto">
+        <Card className="w-full max-w-md rounded-xl shadow-soft transition-transform duration-200 hover:scale-105 hover:shadow-lg p-8 glass relative z-30">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Growth Hub Manager</CardTitle>
             <CardDescription>
@@ -84,7 +84,8 @@ export default function Auth() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  autoComplete="email"
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary relative z-40"
                 />
               </div>
               <div className="space-y-2">
@@ -97,7 +98,8 @@ export default function Auth() {
                   placeholder="Enter your password"
                   required
                   minLength={6}
-                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  autoComplete="current-password"
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary relative z-40"
                 />
               </div>
               <Button
