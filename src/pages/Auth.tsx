@@ -29,16 +29,65 @@ export default function Auth() {
         : await signIn(email, password);
 
       if (error) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        });
+        // Handle specific error codes for better user experience
+        switch (error.message) {
+          case 'email_address_not_authorized':
+            toast({
+              title: "Email Not Authorized",
+              description: "This email is not authorized. Please contact support or use a different email.",
+              variant: "destructive",
+            });
+            break;
+          case 'signup_disabled':
+            toast({
+              title: "Sign-up Disabled",
+              description: "Account creation is currently disabled.",
+              variant: "destructive",
+            });
+            break;
+          case 'email_exists':
+            toast({
+              title: "Email Already Exists",
+              description: "An account with this email already exists. Try signing in instead.",
+              variant: "destructive",
+            });
+            break;
+          case 'weak_password':
+            toast({
+              title: "Password Too Weak",
+              description: "Please choose a stronger password with at least 6 characters.",
+              variant: "destructive",
+            });
+            break;
+          case 'invalid_credentials':
+            toast({
+              title: "Invalid Credentials",
+              description: "The email or password you entered is incorrect.",
+              variant: "destructive",
+            });
+            break;
+          case 'email_not_confirmed':
+            toast({
+              title: "Email Not Confirmed",
+              description: "Please check your email and click the verification link before signing in.",
+              variant: "destructive",
+            });
+            break;
+          default:
+            toast({
+              title: "Error",
+              description: error.message,
+              variant: "destructive",
+            });
+        }
       } else if (isSignUp) {
         toast({
           title: "Success",
           description: "Please check your email for verification link",
         });
+        // Clear form on successful signup
+        setEmail('');
+        setPassword('');
       }
     } catch (error) {
       toast({
