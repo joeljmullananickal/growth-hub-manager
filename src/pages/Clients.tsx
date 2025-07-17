@@ -199,28 +199,236 @@ export default function Clients() {
 
   return (
     <div className="min-h-0 flex flex-col bg-cover relative animate-fade-in font-inter" style={{ backgroundImage: `url(${sectionBg})` }}>
-      <div className="flex items-center justify-between h-16 px-4 sm:px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
+      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in truncate" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (!open) resetForm(); }}>
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={(open) => {
+            setIsDialogOpen(open);
+            if (!open) setEditingClient(null); // Reset editingClient when dialog closes
+            if (open && !editingClient) resetForm(); // Only reset form when adding
+          }}
+        >
           <DialogTrigger asChild>
-            <Button onClick={resetForm} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto">Add Client</Button>
+            <Button variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto">Add Client</Button>
           </DialogTrigger>
+          <DialogContent className="max-w-xl rounded-xl shadow-soft animate-fade-in top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{editingClient ? 'Edit Client' : 'Add New Client'}</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="name" className="text-sm font-medium">Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="country" className="text-sm font-medium">Country</Label>
+                <Select value={formData.country} onValueChange={(value) => setFormData({ ...formData, country: value })}>
+                  <SelectTrigger className="rounded-xl transition-all duration-200">
+                    <SelectValue placeholder="Select a country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="United States">United States</SelectItem>
+                    <SelectItem value="Canada">Canada</SelectItem>
+                    <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                    <SelectItem value="Australia">Australia</SelectItem>
+                    <SelectItem value="Germany">Germany</SelectItem>
+                    <SelectItem value="France">France</SelectItem>
+                    <SelectItem value="Japan">Japan</SelectItem>
+                    <SelectItem value="India">India</SelectItem>
+                    <SelectItem value="Brazil">Brazil</SelectItem>
+                    <SelectItem value="Mexico">Mexico</SelectItem>
+                    <SelectItem value="Spain">Spain</SelectItem>
+                    <SelectItem value="Italy">Italy</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="state" className="text-sm font-medium">State</Label>
+                <Input
+                  id="state"
+                  name="state"
+                  value={formData.state}
+                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="place" className="text-sm font-medium">Place</Label>
+                <Input
+                  id="place"
+                  name="place"
+                  value={formData.place}
+                  onChange={(e) => setFormData({ ...formData, place: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="currency" className="text-sm font-medium">Currency</Label>
+                <Select value={formData.currency} onValueChange={(value) => setFormData({ ...formData, currency: value })}>
+                  <SelectTrigger className="rounded-xl transition-all duration-200">
+                    <SelectValue placeholder="Select a currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="GBP">GBP</SelectItem>
+                    <SelectItem value="JPY">JPY</SelectItem>
+                    <SelectItem value="INR">INR</SelectItem>
+                    <SelectItem value="BRL">BRL</SelectItem>
+                    <SelectItem value="MXN">MXN</SelectItem>
+                    <SelectItem value="CNY">CNY</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="no_of_branches" className="text-sm font-medium">Number of Branches</Label>
+                <Input
+                  type="number"
+                  id="no_of_branches"
+                  name="no_of_branches"
+                  value={formData.no_of_branches}
+                  onChange={(e) => setFormData({ ...formData, no_of_branches: parseInt(e.target.value, 10) })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="activated_tax_module" className="text-sm font-medium">Activated Tax Module</Label>
+                <Select value={formData.activated_tax_module ? 'true' : 'false'} onValueChange={(value) => setFormData({ ...formData, activated_tax_module: value === 'true' })}>
+                  <SelectTrigger className="rounded-xl transition-all duration-200">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="true">Yes</SelectItem>
+                    <SelectItem value="false">No</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="gst_number" className="text-sm font-medium">GST Number</Label>
+                <Input
+                  id="gst_number"
+                  name="gst_number"
+                  value={formData.gst_number}
+                  onChange={(e) => setFormData({ ...formData, gst_number: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="contact_person_name" className="text-sm font-medium">Contact Person Name</Label>
+                <Input
+                  id="contact_person_name"
+                  name="contact_person_name"
+                  value={formData.contact_person_name}
+                  onChange={(e) => setFormData({ ...formData, contact_person_name: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="contact_number_1" className="text-sm font-medium">Contact Number 1</Label>
+                <Input
+                  id="contact_number_1"
+                  name="contact_number_1"
+                  value={formData.contact_number_1}
+                  onChange={(e) => setFormData({ ...formData, contact_number_1: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="contact_number_2" className="text-sm font-medium">Contact Number 2</Label>
+                <Input
+                  id="contact_number_2"
+                  name="contact_number_2"
+                  value={formData.contact_number_2}
+                  onChange={(e) => setFormData({ ...formData, contact_number_2: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="email_id" className="text-sm font-medium">Email ID</Label>
+                <Input
+                  type="email"
+                  id="email_id"
+                  name="email_id"
+                  value={formData.email_id}
+                  onChange={(e) => setFormData({ ...formData, email_id: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="reference" className="text-sm font-medium">Reference</Label>
+                <Input
+                  id="reference"
+                  name="reference"
+                  value={formData.reference}
+                  onChange={(e) => setFormData({ ...formData, reference: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="onboard_date" className="text-sm font-medium">Onboard Date</Label>
+                <Input
+                  type="date"
+                  id="onboard_date"
+                  name="onboard_date"
+                  value={formData.onboard_date}
+                  onChange={(e) => setFormData({ ...formData, onboard_date: e.target.value })}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="status" className="text-sm font-medium">Status</Label>
+                <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value as 'active' | 'discontinued' | 'hold' })}>
+                  <SelectTrigger className="rounded-xl transition-all duration-200">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="discontinued">Discontinued</SelectItem>
+                    <SelectItem value="hold">Hold</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {formData.status !== 'active' && (
+                <div>
+                  <Label htmlFor="discontinue_reason" className="text-sm font-medium">Discontinue Reason</Label>
+                  <Input
+                    id="discontinue_reason"
+                    name="discontinue_reason"
+                    value={formData.discontinue_reason}
+                    onChange={(e) => setFormData({ ...formData, discontinue_reason: e.target.value })}
+                    className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              )}
+              <Button type="submit" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto">
+                {editingClient ? 'Update Client' : 'Add Client'}
+              </Button>
+            </form>
+          </DialogContent>
         </Dialog>
       </div>
-      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-6 pb-12 pt-6 sm:pt-8">
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
         <div className="absolute inset-0 bg-gradient-hero opacity-60 animate-morphing pointer-events-none"></div>
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 mb-2">
+        <div className="flex flex-wrap gap-4 mb-2">
           <Input
             placeholder="Search by name or GST number..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary w-full sm:w-56"
+            className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary w-56"
           />
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-40 rounded-xl transition-all duration-200">
+            <SelectTrigger className="w-40 rounded-xl transition-all duration-200">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -231,7 +439,7 @@ export default function Clients() {
             </SelectContent>
           </Select>
           <Select value={countryFilter} onValueChange={setCountryFilter}>
-            <SelectTrigger className="w-full sm:w-40 rounded-xl transition-all duration-200">
+            <SelectTrigger className="w-40 rounded-xl transition-all duration-200">
               <SelectValue placeholder="Country" />
             </SelectTrigger>
             <SelectContent>
@@ -242,16 +450,16 @@ export default function Clients() {
             </SelectContent>
           </Select>
         </div>
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4">
           {filteredClients.map((client) => (
             <Card
               key={client.id}
-              className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:shadow-lg w-full"
+              className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:shadow-lg"
             >
               <CardHeader>
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <CardTitle className="text-base sm:text-lg truncate">{client.name}</CardTitle>
-                  <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">{client.name}</CardTitle>
+                  <div className="flex items-center space-x-2">
                     <Badge className={getStatusBadge(client.status)}>
                       {client.status}
                     </Badge>
@@ -277,7 +485,7 @@ export default function Clients() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 text-xs sm:text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
                     <span className="font-medium">Country:</span> {client.country}
                   </div>
@@ -295,7 +503,7 @@ export default function Clients() {
                   </div>
                 </div>
                 {client.discontinue_reason && (
-                  <div className="mt-2 text-xs sm:text-sm text-destructive">
+                  <div className="mt-2 text-sm text-destructive">
                     <span className="font-medium">Reason:</span> {client.discontinue_reason}
                   </div>
                 )}

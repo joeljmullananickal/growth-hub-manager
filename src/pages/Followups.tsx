@@ -157,16 +157,16 @@ export default function Followups() {
   return (
     <div className="min-h-screen bg-cover bg-center relative animate-fade-in py-0 px-0" style={{ backgroundImage: `url(${floatingShapes})` }}>
       <div className="absolute inset-0 bg-gradient-hero pointer-events-none opacity-70 animate-morphing"></div>
-      <div className="flex items-center justify-between h-16 px-4 sm:px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b m-0">
+      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b m-0">
           <div className="relative">
             <span className="absolute inset-0  rounded-lg -z-10"></span>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-orange-500 drop-shadow-2xl font-playfair animate-slide-left px-2 sm:px-4 py-2 rounded-lg truncate" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Follow-ups</h1>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-orange-500 drop-shadow-2xl font-playfair animate-slide-left px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Follow-ups</h1>
           </div>
           <div className="flex gap-2">
             <Button
               onClick={generateRenewalFollowups}
               variant="outline"
-              className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto"
+              className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Generate Renewal Followups
@@ -176,7 +176,7 @@ export default function Followups() {
                 <Button
                   onClick={resetForm}
                   variant="black"
-                  className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto"
+                  className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Followup
@@ -243,58 +243,56 @@ export default function Followups() {
             </Dialog>
           </div>
         </div>
-      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-6 pb-12 pt-6 sm:pt-8">
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
 
         <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
           <CardHeader>
             <CardTitle>All Follow-ups</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Client</TableHead>
-                    <TableHead>Contact Person</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Mode</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Next Followup</TableHead>
-                    <TableHead>Remarks</TableHead>
-                    <TableHead>Actions</TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Client</TableHead>
+                  <TableHead>Contact Person</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Mode</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Next Followup</TableHead>
+                  <TableHead>Remarks</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredFollowups.map((followup) => (
+                  <TableRow key={followup.id} className="hover:bg-blue-50 transition-colors duration-150">
+                    <TableCell className="font-medium">{followup.clients.name}</TableCell>
+                    <TableCell>{followup.clients.contact_person_name}</TableCell>
+                    <TableCell>
+                      <Badge variant={followup.followup_type === 'payment_renewal' ? 'default' : 'secondary'}>
+                        {followup.followup_type === 'payment_renewal' ? 'Payment Renewal' : 'Manual'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{getModeBadge(followup.followup_mode)}</TableCell>
+                    <TableCell>{getStatusBadge(followup.followup_status)}</TableCell>
+                    <TableCell>
+                      {followup.next_followup_date ? format(parseISO(followup.next_followup_date), 'MMM dd, yyyy') : 'N/A'}
+                    </TableCell>
+                    <TableCell className="max-w-xs truncate">{followup.followup_remarks || 'N/A'}</TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => openEditDialog(followup)} className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => deleteFollowup(followup.id)} className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
+                          <Trash className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredFollowups.map((followup) => (
-                    <TableRow key={followup.id} className="hover:bg-blue-50 transition-colors duration-150">
-                      <TableCell className="font-medium">{followup.clients.name}</TableCell>
-                      <TableCell>{followup.clients.contact_person_name}</TableCell>
-                      <TableCell>
-                        <Badge variant={followup.followup_type === 'payment_renewal' ? 'default' : 'secondary'}>
-                          {followup.followup_type === 'payment_renewal' ? 'Payment Renewal' : 'Manual'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{getModeBadge(followup.followup_mode)}</TableCell>
-                      <TableCell>{getStatusBadge(followup.followup_status)}</TableCell>
-                      <TableCell>
-                        {followup.next_followup_date ? format(parseISO(followup.next_followup_date), 'MMM dd, yyyy') : 'N/A'}
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">{followup.followup_remarks || 'N/A'}</TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm" onClick={() => openEditDialog(followup)} className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
-                            <Edit className="w-3 h-3" />
-                          </Button>
-                          <Button variant="outline" size="sm" onClick={() => deleteFollowup(followup.id)} className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">
-                            <Trash className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
 
