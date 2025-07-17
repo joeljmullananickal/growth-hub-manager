@@ -199,28 +199,28 @@ export default function Clients() {
 
   return (
     <div className="min-h-0 flex flex-col bg-cover relative animate-fade-in font-inter" style={{ backgroundImage: `url(${sectionBg})` }}>
-      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
+      <div className="flex items-center justify-between h-16 px-4 sm:px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
         <div className="flex items-center gap-2">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in truncate" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (!open) resetForm(); }}>
           <DialogTrigger asChild>
-            <Button onClick={resetForm} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Add Client</Button>
+            <Button onClick={resetForm} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto">Add Client</Button>
           </DialogTrigger>
         </Dialog>
       </div>
-      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-6 pb-12 pt-6 sm:pt-8">
         <div className="absolute inset-0 bg-gradient-hero opacity-60 animate-morphing pointer-events-none"></div>
         {/* Filters */}
-        <div className="flex flex-wrap gap-4 mb-2">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 mb-2">
           <Input
             placeholder="Search by name or GST number..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary w-56"
+            className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary w-full sm:w-56"
           />
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-40 rounded-xl transition-all duration-200">
+            <SelectTrigger className="w-full sm:w-40 rounded-xl transition-all duration-200">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -231,7 +231,7 @@ export default function Clients() {
             </SelectContent>
           </Select>
           <Select value={countryFilter} onValueChange={setCountryFilter}>
-            <SelectTrigger className="w-40 rounded-xl transition-all duration-200">
+            <SelectTrigger className="w-full sm:w-40 rounded-xl transition-all duration-200">
               <SelectValue placeholder="Country" />
             </SelectTrigger>
             <SelectContent>
@@ -242,16 +242,16 @@ export default function Clients() {
             </SelectContent>
           </Select>
         </div>
-        <div className="grid gap-4">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filteredClients.map((client) => (
             <Card
               key={client.id}
-              className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:shadow-lg"
+              className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:shadow-lg w-full"
             >
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">{client.name}</CardTitle>
-                  <div className="flex items-center space-x-2">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <CardTitle className="text-base sm:text-lg truncate">{client.name}</CardTitle>
+                  <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
                     <Badge className={getStatusBadge(client.status)}>
                       {client.status}
                     </Badge>
@@ -277,7 +277,7 @@ export default function Clients() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 text-xs sm:text-sm">
                   <div>
                     <span className="font-medium">Country:</span> {client.country}
                   </div>
@@ -295,7 +295,7 @@ export default function Clients() {
                   </div>
                 </div>
                 {client.discontinue_reason && (
-                  <div className="mt-2 text-sm text-destructive">
+                  <div className="mt-2 text-xs sm:text-sm text-destructive">
                     <span className="font-medium">Reason:</span> {client.discontinue_reason}
                   </div>
                 )}

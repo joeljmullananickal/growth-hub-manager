@@ -192,11 +192,11 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-cover bg-center relative animate-fade-in space-y-6 font-inter" style={{ backgroundImage: `url(${heroBg})` }}>
-      <div className="relative z-10 flex items-center justify-between mb-8 px-8 pt-8">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-pink-500 drop-shadow-lg font-playfair animate-bounce-in">Dashboard</h1>
+    <div className="min-h-screen bg-cover bg-center relative animate-fade-in space-y-6 font-inter">
+      <div className="relative z-10 flex items-center justify-between mb-4 px-2 sm:px-4 md:px-8 pt-6 sm:pt-8">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-pink-500 drop-shadow-lg font-playfair animate-bounce-in truncate">Dashboard</h1>
       </div>
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-8 pb-12">
+      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 px-2 sm:px-4 md:px-8 pb-8">
         {dashboardCards.map((card) => (
           <Card
             key={card.key}
@@ -204,10 +204,10 @@ export default function Dashboard() {
             onClick={() => handleCardClick(card.key)}
           >
             <CardHeader className="pb-2">
-              <CardTitle className="text-md font-medium">{card.title}</CardTitle>
+              <CardTitle className="text-sm sm:text-md font-medium truncate">{card.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className={`text-2xl font-bold ${card.color}`}>
+              <div className={`text-xl sm:text-2xl font-bold ${card.color}`}>
                 {card.value}
               </div>
             </CardContent>

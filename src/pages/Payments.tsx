@@ -198,57 +198,59 @@ export default function Payments() {
 
   return (
     <div className="min-h-screen flex flex-col bg-cover relative font-inter" style={{ backgroundImage: `url(${techIconBg})` }}>
-      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
+      <div className="flex items-center justify-between h-16 px-4 sm:px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
         <div className="flex items-center gap-2">
-          <h1 className="text-3xl md:text-4xl font-extrabold text--500 drop-shadow-2xl font-playfair animate-slide-right" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Payments</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text--500 drop-shadow-2xl font-playfair animate-slide-right truncate" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Payments</h1>
         </div>
-        <Button onClick={() => { resetForm(); setIsCreateOpen(true); }} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Add Payment</Button>
+        <Button onClick={() => { resetForm(); setIsCreateOpen(true); }} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto">Add Payment</Button>
       </div>
-      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-6 pb-12 pt-6 sm:pt-8">
         <div className="absolute inset-0 bg-gradient-hero opacity-50 pointer-events-none"></div>
         <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
           <CardHeader>
             <CardTitle>All Payments</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Client</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredPayments.map((payment) => (
-                  <TableRow key={payment.id} className="hover:bg-blue-50 transition-colors duration-150">
-                    <TableCell className="font-medium">{payment.clients.name}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <IndianRupee className="w-3 h-3" />
-                        {payment.total_amount} {payment.currency}
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(payment.payment_status)}</TableCell>
-                    <TableCell>
-                      {payment.last_paid_date ? format(parseISO(payment.last_paid_date), 'MMM dd, yyyy') : 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm" onClick={() => openEditDialog(payment)}>
-                          <Edit className="w-3 h-3" />
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => deletePayment(payment.id)}>
-                          <Trash className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Client</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredPayments.map((payment) => (
+                    <TableRow key={payment.id} className="hover:bg-blue-50 transition-colors duration-150">
+                      <TableCell className="font-medium">{payment.clients.name}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <IndianRupee className="w-3 h-3" />
+                          {payment.total_amount} {payment.currency}
+                        </div>
+                      </TableCell>
+                      <TableCell>{getStatusBadge(payment.payment_status)}</TableCell>
+                      <TableCell>
+                        {payment.last_paid_date ? format(parseISO(payment.last_paid_date), 'MMM dd, yyyy') : 'N/A'}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm" onClick={() => openEditDialog(payment)}>
+                            <Edit className="w-3 h-3" />
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => deletePayment(payment.id)}>
+                            <Trash className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
@@ -258,7 +260,7 @@ export default function Payments() {
             </DialogHeader>
             <form onSubmit={handleAddPayment} className="space-y-4">
               {/* --- Your form fields here, similar to the edit form --- */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="client_id">Client</Label>
                   <Select value={formData.client_id} onValueChange={(value) => setFormData({...formData, client_id: value})}>
@@ -286,7 +288,7 @@ export default function Payments() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="subscription_plan">Subscription Plan</Label>
                   <Select value={formData.subscription_plan} onValueChange={(value: 'monthly' | '3_month' | '6_month' | 'yearly') => setFormData({...formData, subscription_plan: value})}>
@@ -319,7 +321,7 @@ export default function Payments() {
                 />
                 <Label htmlFor="need_gst_bill">Need GST Bill</Label>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="commission">Commission</Label>
                   <Input
@@ -380,7 +382,7 @@ export default function Payments() {
               <DialogTitle>Edit Payment</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleEdit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="client_id">Client</Label>
                   <Select value={formData.client_id} onValueChange={(value) => setFormData({...formData, client_id: value})}>
@@ -409,7 +411,7 @@ export default function Payments() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="subscription_plan">Subscription Plan</Label>
                   <Select value={formData.subscription_plan} onValueChange={(value: 'monthly' | '3_month' | '6_month' | 'yearly') => setFormData({...formData, subscription_plan: value})}>
@@ -440,7 +442,7 @@ export default function Payments() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="commission">Commission</Label>
                   <Input

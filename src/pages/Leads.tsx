@@ -119,64 +119,59 @@ export default function Leads() {
 
   return (
     <div className="min-h-screen bg-cover relative animate-fade-in space-y-6 font-inter" style={{ backgroundImage: `url(${wavePatternBg})` }}>
-      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
+      <div className="flex items-center justify-between h-16 px-4 sm:px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
           <div className="relative">
             <span className="absolute inset-0 rounded-lg -z-10"></span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-red-500 drop-shadow-2xl font-playfair animate-bounce-in px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Leads</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-red-500 drop-shadow-2xl font-playfair animate-bounce-in px-2 sm:px-4 py-2 rounded-lg truncate" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Leads</h1>
           </div>
-          <Button
-            onClick={() => setIsCreateOpen(true)}
-            variant="black"
-            className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Lead
-          </Button>
+          <Button onClick={() => setIsCreateOpen(true)} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto"><Plus className="w-4 h-4 mr-2" />Add Lead</Button>
         </div>
-      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-6 pb-12 pt-6 sm:pt-8">
         <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
           <CardHeader>
             <CardTitle>All Leads</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {leads.map((lead) => (
-                  <TableRow key={lead.id} className="hover:bg-blue-50 transition-colors duration-150">
-                    <TableCell className="font-medium">{lead.customer_name}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <Phone className="w-3 h-3" />
-                        {lead.contact_number}
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(lead.status)}</TableCell>
-                    <TableCell>
-                      {lead.next_followup_date ? format(parseISO(lead.next_followup_date), 'MMM dd, yyyy') : 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm" onClick={() => openEditDialog(lead)}>
-                          <Edit className="w-3 h-3" />
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => deleteLead(lead.id)}>
-                          <Trash className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {leads.map((lead) => (
+                    <TableRow key={lead.id} className="hover:bg-blue-50 transition-colors duration-150">
+                      <TableCell className="font-medium">{lead.customer_name}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Phone className="w-3 h-3" />
+                          {lead.contact_number}
+                        </div>
+                      </TableCell>
+                      <TableCell>{getStatusBadge(lead.status)}</TableCell>
+                      <TableCell>
+                        {lead.next_followup_date ? format(parseISO(lead.next_followup_date), 'MMM dd, yyyy') : 'N/A'}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm" onClick={() => openEditDialog(lead)}>
+                            <Edit className="w-3 h-3" />
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => deleteLead(lead.id)}>
+                            <Trash className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 
