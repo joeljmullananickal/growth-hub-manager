@@ -193,7 +193,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-cover bg-center relative animate-fade-in space-y-6 font-inter" style={{ backgroundImage: `url(${heroBg})` }}>
-      <div className="absolute inset-0 bg-gradient-hero pointer-events-none"></div>
       <div className="relative z-10 flex items-center justify-between mb-8 px-8 pt-8">
         <h1 className="text-4xl md:text-5xl font-extrabold text-pink-500 drop-shadow-lg font-playfair animate-bounce-in">Dashboard</h1>
       </div>

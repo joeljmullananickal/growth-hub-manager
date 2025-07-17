@@ -12,7 +12,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className="h-screen flex w-full">
         <AppSidebar />
         <div className="flex-1 flex flex-col">
           <header className="h-14 flex items-center justify-between border-b px-4 bg-background/70 glass shadow-lg animate-fade-in sticky top-0 z-20">
@@ -29,7 +29,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </Button>
             </div>
           </header>
-          <main className="flex-1 p-6 bg-background/60">
+          <main className="flex-1 overflow-auto bg-background/60">
             {children}
           </main>
         </div>

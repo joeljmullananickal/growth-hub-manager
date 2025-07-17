@@ -20,6 +20,7 @@ export interface Payment {
   payment_remarks: string | null;
   created_at: string;
   updated_at: string;
+  manual_renewal_date?: string | null; // <-- new optional field
   clients: {
     name: string;
     contact_person_name: string;
@@ -72,6 +73,7 @@ export function usePayments() {
     payment_remarks?: string;
     last_paid_date?: string;
     last_paid_amount?: number;
+    manual_renewal_date?: string;
   }) => {
     if (!user) return;
 

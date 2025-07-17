@@ -155,10 +155,9 @@ export default function Followups() {
   }
 
   return (
-    <div className="min-h-screen bg-cover bg-center relative animate-fade-in py-0 px-0 animate-particles" style={{ backgroundImage: `url(${floatingShapes})` }}>
+    <div className="min-h-screen bg-cover bg-center relative animate-fade-in py-0 px-0" style={{ backgroundImage: `url(${floatingShapes})` }}>
       <div className="absolute inset-0 bg-gradient-hero pointer-events-none opacity-70 animate-morphing"></div>
-      <div className="relative z-10 w-full max-w-6xl mx-auto pt-8 px-6 pb-12 rounded-3xl">
-        <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b m-0">
           <div className="relative">
             <span className="absolute inset-0  rounded-lg -z-10"></span>
             <h1 className="text-3xl md:text-4xl font-extrabold text-orange-500 drop-shadow-2xl font-playfair animate-slide-left px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Follow-ups</h1>
@@ -244,6 +243,7 @@ export default function Followups() {
             </Dialog>
           </div>
         </div>
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
 
         <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
           <CardHeader>

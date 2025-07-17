@@ -198,170 +198,19 @@ export default function Clients() {
   }
 
   return (
-    <div className="min-h-screen bg-cover relative animate-fade-in space-y-6 font-inter animate-float" style={{ backgroundImage: `url(${sectionBg})` }}>
-      <div className="absolute inset-0 bg-gradient-hero opacity-60 animate-morphing"></div>
-      <div className="relative z-10 w-full max-w-6xl mx-auto pt-8 px-6 pb-12 rounded-3xl">
-        <div className="flex items-center justify-between mb-6">
-          <div className="relative">
-            <span className="absolute inset-0 rounded-lg -z-10"></span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
-          </div>
-          <Dialog open={isDialogOpen} onOpenChange={(open) => {
-            setIsDialogOpen(open);
-            if (!open) resetForm();
-          }}>
-            <DialogTrigger asChild>
-              <Button
-                onClick={resetForm}
-                variant="black"
-                className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
-              >
-                Add Client
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto rounded-xl shadow-soft animate-fade-in">
-              <DialogHeader>
-                <DialogTitle>{editingClient ? 'Edit Client' : 'Add New Client'}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Name *</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                      className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="country">Country *</Label>
-                    <Select value={formData.country} onValueChange={(value) => setFormData({ ...formData, country: value })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country} value={country}>{country}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="gst_number">GST Number</Label>
-                    <Input
-                      id="gst_number"
-                      value={formData.gst_number}
-                      onChange={(e) => setFormData({ ...formData, gst_number: e.target.value })}
-                      className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="state">State</Label>
-                    <Input
-                      id="state"
-                      value={formData.state}
-                      onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                      className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="contact_person_name">Contact Person *</Label>
-                    <Input
-                      id="contact_person_name"
-                      value={formData.contact_person_name}
-                      onChange={(e) => setFormData({ ...formData, contact_person_name: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="contact_number_1">Contact Number 1 *</Label>
-                    <Input
-                      id="contact_number_1"
-                      value={formData.contact_number_1}
-                      onChange={(e) => setFormData({ ...formData, contact_number_1: e.target.value })}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="contact_number_2">Contact Number 2</Label>
-                    <Input
-                      id="contact_number_2"
-                      value={formData.contact_number_2}
-                      onChange={(e) => setFormData({ ...formData, contact_number_2: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email_id">Email</Label>
-                    <Input
-                      id="email_id"
-                      type="email"
-                      value={formData.email_id}
-                      onChange={(e) => setFormData({ ...formData, email_id: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="onboard_date">Onboard Date *</Label>
-                    <Input
-                      id="onboard_date"
-                      type="date"
-                      value={formData.onboard_date}
-                      onChange={(e) => setFormData({ ...formData, onboard_date: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="status">Status *</Label>
-                    <Select value={formData.status} onValueChange={(value: any) => setFormData({ ...formData, status: value })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="discontinued">Discontinued</SelectItem>
-                        <SelectItem value="hold">Hold</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {formData.status !== 'active' && (
-                  <div>
-                    <Label htmlFor="discontinue_reason">Reason *</Label>
-                    <Input
-                      id="discontinue_reason"
-                      value={formData.discontinue_reason}
-                      onChange={(e) => setFormData({ ...formData, discontinue_reason: e.target.value })}
-                      placeholder="Reason for discontinuation/hold"
-                      required
-                    />
-                  </div>
-                )}
-
-                <div className="flex justify-end space-x-2">
-                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button type="submit">
-                    {editingClient ? 'Update' : 'Add'} Client
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+    <div className="min-h-0 flex flex-col bg-cover relative animate-fade-in font-inter" style={{ backgroundImage: `url(${sectionBg})` }}>
+      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
+        <div className="flex items-center gap-2">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
         </div>
+        <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (!open) resetForm(); }}>
+          <DialogTrigger asChild>
+            <Button onClick={resetForm} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Add Client</Button>
+          </DialogTrigger>
+        </Dialog>
+      </div>
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
+        <div className="absolute inset-0 bg-gradient-hero opacity-60 animate-morphing pointer-events-none"></div>
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-2">
           <Input
@@ -397,7 +246,7 @@ export default function Clients() {
           {filteredClients.map((client) => (
             <Card
               key={client.id}
-              className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+              className="cursor-pointer rounded-xl shadow-soft bg-white transition-transform duration-200 hover:shadow-lg"
             >
               <CardHeader>
                 <div className="flex items-center justify-between">

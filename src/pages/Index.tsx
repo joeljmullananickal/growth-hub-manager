@@ -94,11 +94,11 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-hero"></div>
         
         {/* Advanced floating elements with morphing */}
-        <div className="absolute top-20 left-20 w-32 h-32 bg-primary/10 animate-float animate-morphing backdrop-blur-sm"></div>
+        <div className="absolute top-20 left-20 w-32 h-32 bg-primary/10 animate-morphing backdrop-blur-sm"></div>
         <div className="absolute bottom-20 right-20 w-24 h-24 bg-accent/10 animate-particles rounded-full" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 bg-primary/20 animate-float rounded-full" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-1/2 left-10 w-16 h-16 bg-primary/20 rounded-full" style={{ animationDelay: '4s' }}></div>
         <div className="absolute top-1/3 right-1/4 w-20 h-20 bg-accent/15 animate-particles rounded-full" style={{ animationDelay: '6s' }}></div>
-        <div className="absolute bottom-1/3 left-1/4 w-12 h-12 bg-primary/25 animate-float rounded-full" style={{ animationDelay: '8s' }}></div>
+        <div className="absolute bottom-1/3 left-1/4 w-12 h-12 bg-primary/25 rounded-full" style={{ animationDelay: '8s' }}></div>
 
         <div className={`relative z-10 text-center px-6 max-w-6xl mx-auto ${isVisible ? 'animate-bounce-in' : 'opacity-0'}`}>
           {/* Advanced glassmorphism hero card */}
@@ -181,7 +181,7 @@ const Index = () => {
               >
                 <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
                 <CardHeader className="text-center pb-4 relative z-10">
-                  <div className="mx-auto w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 animate-float" style={{ animationDelay: `${index * 2}s` }}>
+                  <div className="mx-auto w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500" style={{ animationDelay: `${index * 2}s` }}>
                     {feature.icon}
                   </div>
                   <CardTitle className="font-montserrat text-xl font-semibold group-hover:text-primary transition-colors duration-300">

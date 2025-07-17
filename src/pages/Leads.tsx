@@ -118,10 +118,8 @@ export default function Leads() {
   }
 
   return (
-    <div className="min-h-screen bg-cover relative animate-fade-in space-y-6 font-inter animate-particles" style={{ backgroundImage: `url(${wavePatternBg})` }}>
-      <div className="absolute inset-0 bg-gradient-hero opacity-80 animate-morphing"></div>
-      <div className="relative z-10 w-full max-w-6xl mx-auto pt-8 px-6 pb-12 rounded-3xl ">
-        <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen bg-cover relative animate-fade-in space-y-6 font-inter" style={{ backgroundImage: `url(${wavePatternBg})` }}>
+      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
           <div className="relative">
             <span className="absolute inset-0 rounded-lg -z-10"></span>
             <h1 className="text-3xl md:text-4xl font-extrabold text-red-500 drop-shadow-2xl font-playfair animate-bounce-in px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Leads</h1>
@@ -135,6 +133,7 @@ export default function Leads() {
             Add Lead
           </Button>
         </div>
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
         <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
           <CardHeader>
             <CardTitle>All Leads</CardTitle>

@@ -52,7 +52,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative font-inter animate-fade-in py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative font-inter animate-fade-in py-12 px-4 pt-14">
       <video 
         autoPlay 
         muted 

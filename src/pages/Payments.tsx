@@ -33,6 +33,7 @@ export default function Payments() {
     last_paid_date: '',
     last_paid_amount: '',
     payment_status: 'unpaid' as 'paid' | 'unpaid' | 'invoiced',
+    manual_renewal_date: '', // <-- new field
   });
 
   const location = useLocation();
@@ -58,8 +59,8 @@ export default function Payments() {
 
   if (renewals === 'thisMonth') {
     filteredPayments = payments.filter(p => {
-      if (!p.next_renewal_date) return false;
-      const renewalDate = new Date(p.next_renewal_date);
+      const renewalDate = p.manual_renewal_date ? new Date(p.manual_renewal_date) : (p.next_renewal_date ? new Date(p.next_renewal_date) : null);
+      if (!renewalDate) return false;
       return (
         renewalDate.getMonth() === currentMonth &&
         renewalDate.getFullYear() === currentYear
@@ -77,8 +78,8 @@ export default function Payments() {
     });
   } else if (unpaid === 'previousMonth') {
     filteredPayments = payments.filter(p => {
-      if (!p.next_renewal_date) return false;
-      const renewalDate = new Date(p.next_renewal_date);
+      const renewalDate = p.manual_renewal_date ? new Date(p.manual_renewal_date) : (p.next_renewal_date ? new Date(p.next_renewal_date) : null);
+      if (!renewalDate) return false;
       return (
         renewalDate.getMonth() === lastMonth &&
         renewalDate.getFullYear() === lastMonthYear &&
@@ -87,8 +88,8 @@ export default function Payments() {
     });
   } else if (unpaid === 'old') {
     filteredPayments = payments.filter(p => {
-      if (!p.next_renewal_date) return false;
-      const renewalDate = new Date(p.next_renewal_date);
+      const renewalDate = p.manual_renewal_date ? new Date(p.manual_renewal_date) : (p.next_renewal_date ? new Date(p.next_renewal_date) : null);
+      if (!renewalDate) return false;
       return renewalDate < twoMonthsAgo && p.payment_status === 'unpaid';
     });
   } else if (followup === 'due') {
@@ -110,6 +111,7 @@ export default function Payments() {
       last_paid_date: '',
       last_paid_amount: '',
       payment_status: 'unpaid',
+      manual_renewal_date: '',
     });
   };
 
@@ -125,6 +127,7 @@ export default function Payments() {
       payment_remarks: formData.payment_remarks || undefined,
       last_paid_date: formData.last_paid_date || undefined,
       last_paid_amount: formData.last_paid_amount ? parseFloat(formData.last_paid_amount) : undefined,
+      manual_renewal_date: formData.manual_renewal_date || undefined, // <-- new field
     });
     setIsCreateOpen(false);
     resetForm();
@@ -145,6 +148,7 @@ export default function Payments() {
       last_paid_date: formData.last_paid_date || null,
       last_paid_amount: formData.last_paid_amount ? parseFloat(formData.last_paid_amount) : null,
       payment_status: formData.payment_status,
+      manual_renewal_date: formData.manual_renewal_date || null, // <-- new field
     });
     setIsEditOpen(false);
     setEditingPayment(null);
@@ -164,6 +168,7 @@ export default function Payments() {
       last_paid_date: payment.last_paid_date || '',
       last_paid_amount: payment.last_paid_amount?.toString() || '',
       payment_status: payment.payment_status,
+      manual_renewal_date: payment.manual_renewal_date || '',
     });
     setIsEditOpen(true);
   };
@@ -192,25 +197,15 @@ export default function Payments() {
   }
 
   return (
-    <div className="min-h-screen bg-cover relative animate-fade-in space-y-6 font-inter animate-float" style={{ backgroundImage: `url(${techIconBg})` }}>
-      <div className="absolute inset-0 bg-gradient-hero opacity-50 animate-morphing"></div>
-      <div className="relative z-10 w-full max-w-6xl mx-auto pt-8 px-6 pb-12 rounded-3xl">
-        <div className="flex items-center justify-between mb-6">
-          <div className="relative">
-            <span className="absolute inset-0 rounded-lg -z-10"></span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text--500 drop-shadow-2xl font-playfair animate-slide-right px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Payments</h1>
-          </div>
-          <Button
-            onClick={() => {
-                resetForm();
-                setIsCreateOpen(true);
-              }}
-            variant="black"
-            className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
-          >
-            Add Payment
-          </Button>
+    <div className="min-h-screen flex flex-col bg-cover relative font-inter" style={{ backgroundImage: `url(${techIconBg})` }}>
+      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
+        <div className="flex items-center gap-2">
+          <h1 className="text-3xl md:text-4xl font-extrabold text--500 drop-shadow-2xl font-playfair animate-slide-right" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Payments</h1>
         </div>
+        <Button onClick={() => { resetForm(); setIsCreateOpen(true); }} variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg">Add Payment</Button>
+      </div>
+      <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
+        <div className="absolute inset-0 bg-gradient-hero opacity-50 pointer-events-none"></div>
         <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">
           <CardHeader>
             <CardTitle>All Payments</CardTitle>
@@ -356,6 +351,15 @@ export default function Payments() {
                 />
               </div>
               <div>
+                <Label htmlFor="manual_renewal_date">Manual Renewal Date (optional)</Label>
+                <Input
+                  type="date"
+                  value={formData.manual_renewal_date}
+                  onChange={(e) => setFormData({...formData, manual_renewal_date: e.target.value})}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div>
                 <Label htmlFor="payment_remarks">Remarks</Label>
                 <Textarea
                   value={formData.payment_remarks}
@@ -464,6 +468,16 @@ export default function Payments() {
                   type="date"
                   value={formData.last_paid_date}
                   onChange={(e) => setFormData({...formData, last_paid_date: e.target.value})}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="manual_renewal_date">Manual Renewal Date (optional)</Label>
+                <Input
+                  type="date"
+                  value={formData.manual_renewal_date}
+                  onChange={(e) => setFormData({...formData, manual_renewal_date: e.target.value})}
+                  className="rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary"
                 />
               </div>
 
