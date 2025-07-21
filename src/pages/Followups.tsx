@@ -157,31 +157,14 @@ export default function Followups() {
   return (
     <div className="min-h-screen bg-cover bg-center relative animate-fade-in py-0 px-0" style={{ backgroundImage: `url(${floatingShapes})` }}>
       <div className="absolute inset-0 bg-gradient-hero pointer-events-none opacity-70 animate-morphing"></div>
-      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b m-0">
-          <div className="relative">
-            <span className="absolute inset-0  rounded-lg -z-10"></span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-orange-500 drop-shadow-2xl font-playfair animate-slide-left px-4 py-2 rounded-lg" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Follow-ups</h1>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              onClick={generateRenewalFollowups}
-              variant="outline"
-              className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
-            >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Generate Renewal Followups
-            </Button>
-            <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  onClick={resetForm}
-                  variant="black"
-                  className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Followup
-                </Button>
-              </DialogTrigger>
+      <div className="flex flex-row items-center justify-between h-auto min-h-[4rem] px-2 sm:px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b gap-2 w-full min-w-0">
+        <h1 className="flex-shrink min-w-0 text-2xl sm:text-3xl md:text-4xl font-extrabold text-orange-500 drop-shadow-2xl font-playfair animate-slide-left px-2 sm:px-4 py-2 rounded-lg break-words text-left" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Follow-ups</h1>
+        <div className="flex flex-row flex-wrap gap-2 justify-end min-w-0 w-auto">
+          <Button onClick={generateRenewalFollowups} variant="outline" className="min-w-0 w-auto px-2 sm:px-4 py-2 text-xs sm:text-sm rounded-lg truncate transition-transform duration-150 hover:scale-105 hover:shadow-lg"> <RefreshCw className="w-4 h-4 mr-1 sm:mr-2" /> <span className="truncate">Generate Renewal Followups</span></Button>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={resetForm} variant="black" className="min-w-0 w-auto px-2 sm:px-4 py-2 text-xs sm:text-sm rounded-lg truncate transition-transform duration-150 hover:scale-105 hover:shadow-lg"><Plus className="w-4 h-4 mr-1 sm:mr-2" /> <span className="truncate">Add Followup</span></Button>
+            </DialogTrigger>
             <DialogContent className="rounded-xl shadow-soft animate-fade-in">
               <DialogHeader>
                 <DialogTitle>Create New Followup</DialogTitle>
@@ -241,8 +224,8 @@ export default function Followups() {
               </form>
               </DialogContent>
             </Dialog>
-          </div>
         </div>
+      </div>
       <div className="flex-1 overflow-auto w-full max-w-6xl mx-auto px-6 pb-12 pt-8">
 
         <Card className="rounded-xl shadow-soft transition-transform duration-200 hover:scale-[1.01] hover:shadow-lg">

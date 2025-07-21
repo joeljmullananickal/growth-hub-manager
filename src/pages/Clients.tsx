@@ -199,20 +199,15 @@ export default function Clients() {
 
   return (
     <div className="min-h-0 flex flex-col bg-cover relative animate-fade-in font-inter" style={{ backgroundImage: `url(${sectionBg})` }}>
-      <div className="flex items-center justify-between h-16 px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b">
-        <div className="flex items-center gap-2">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
-        </div>
-        <Dialog
-          open={isDialogOpen}
-          onOpenChange={(open) => {
-            setIsDialogOpen(open);
-            if (!open) setEditingClient(null); // Reset editingClient when dialog closes
-            if (open && !editingClient) resetForm(); // Only reset form when adding
-          }}
-        >
+      <div className="flex items-center justify-between h-16 px-4 sm:px-6 bg-white/80 sticky top-0 z-10 backdrop-blur border-b w-full min-w-0">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-500 drop-shadow-2xl font-playfair animate-bounce-in truncate" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>Clients</h1>
+        <Dialog open={isDialogOpen} onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (open && !editingClient) resetForm();
+          if (!open) setEditingClient(null);
+        }}>
           <DialogTrigger asChild>
-            <Button variant="black" className="rounded-xl transition-transform duration-150 hover:scale-105 hover:shadow-lg w-full sm:w-auto">Add Client</Button>
+            <Button variant="black" className="min-w-0 w-auto h-10 px-4 text-sm rounded-lg transition-transform duration-150 hover:scale-105 hover:shadow-lg">Add Client</Button>
           </DialogTrigger>
           <DialogContent className="max-w-xl rounded-xl shadow-soft animate-fade-in top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
